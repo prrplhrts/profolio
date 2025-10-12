@@ -9,7 +9,7 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #4A7387;     /* Hero & header blue */
+  background-color: #4A7387;     
   color: #fff;
   line-height: 1.6;
 }
@@ -34,7 +34,7 @@ a {
    HEADER
 ========================= */
 .site-header {
-  background: #4A7387;           /* Matches hero blue */
+  background: #4A7387;           
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 

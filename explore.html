@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explore Projects – Profolio</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="explore.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="images/logo.svg" alt="Profolio Logo" class="logo">
+        <span class="brand-name">Profolio</span>
+      </a>
+
+      <nav class="nav">
+        <a href="explore.html" class="btn btn-explore-projects active">Explore Projects</a>
+        <a href="builder.html">Portfolio Builder</a>
+        <a href="sign-in.html" class="btn btn-sign-in">Sign In</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="explore-hero">
+    <div class="container explore-hero-inner">
+      <h1>Explore <span>Projects</span></h1>
+      <p>Browse stunning projects shared by our users and discover amazing work.</p>
+    </div>
+
+    <div class="explore-wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 150" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,64 C360,160 1080,0 1440,96 L1440,150 L0,150 Z" fill="#f5f5f5"/>
+      </svg>
+    </div>
+  </section>
+  <section class="explore-content">
+    <!-- FILTER BAR -->
+    <div class="filter-bar container">
+      <button class="filter-btn active" data-category="all">All</button>
+      <button class="filter-btn" data-category="Web Design">Web Design</button>
+      <button class="filter-btn" data-category="UX/UI">UX/UI</button>
+      <button class="filter-btn" data-category="Frontend">Frontend</button>
+      <button class="filter-btn" data-category="Branding">Branding</button>
+      <button class="filter-btn" data-category="Illustration">Illustration</button>
+    </div>
+
+    <!-- PROJECTS GRID -->
+    <section class="projects container">
+      <!-- 1 -->
+      <div class="project-card" data-category="Web Design">
+        <img src="images/project1.jpg" alt="Project Thumbnail" class="project-thumb" />
+        <div class="project-body">
+          <h3 class="project-title">Minimal Portfolio Template</h3>
+          <div class="tags">
+            <span class="tag">Web Design</span>
+            <span class="tag">Minimal</span>
+          </div>
+          <p class="project-desc">
+            A clean, minimal portfolio built to highlight photography and typography-focused projects.
+          </p>
+          <div class="author">
+            <img src="images/author1.jpg" alt="Jane Doe" />
+            <span>Jane Doe</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 2 -->
+      <div class="project-card" data-category="UX/UI">
+        <img src="images/project2.jpg" alt="Project Thumbnail" class="project-thumb" />
+        <div class="project-body">
+          <h3 class="project-title">Interactive UX Portfolio</h3>
+          <div class="tags">
+            <span class="tag">UX/UI</span>
+            <span class="tag">Case Study</span>
+          </div>
+          <p class="project-desc">
+            Showcasing a UX case study with interactive mockups and user journey maps.
+          </p>
+          <div class="author">
+            <img src="images/author2.jpg" alt="Alex Smith" />
+            <span>Alex Smith</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="project-card" data-category="Branding">
+        <img src="images/project3.jpg" alt="Project Thumbnail" class="project-thumb" />
+        <div class="project-body">
+          <h3 class="project-title">Creative Branding Showcase</h3>
+          <div class="tags">
+            <span class="tag">Branding</span>
+            <span class="tag">Creative</span>
+          </div>
+          <p class="project-desc">
+            A portfolio that highlights branding assets and design thinking for local startups.
+          </p>
+          <div class="author">
+            <img src="images/author3.jpg" alt="Sara Lee" />
+            <span>Sara Lee</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="project-card" data-category="Frontend">
+        <img src="images/project4.jpg" alt="Project Thumbnail" class="project-thumb" />
+        <div class="project-body">
+          <h3 class="project-title">Responsive Dashboard UI</h3>
+          <div class="tags">
+            <span class="tag">Frontend</span>
+            <span class="tag">React</span>
+          </div>
+          <p class="project-desc">
+            A modern admin dashboard interface built using React, styled-components, and dynamic charting.
+          </p>
+          <div class="author">
+            <img src="images/author4.jpg" alt="Mark Chan" />
+            <span>Mark Chan</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="project-card" data-category="Illustration">
+        <img src="images/project5.jpg" alt="Project Thumbnail" class="project-thumb" />
+        <div class="project-body">
+          <h3 class="project-title">Digital Illustration Collection</h3>
+          <div class="tags">
+            <span class="tag">Illustration</span>
+            <span class="tag">Art</span>
+          </div>
+          <p class="project-desc">
+            A series of digital art pieces exploring surrealism and color blending techniques.
+          </p>
+          <div class="author">
+            <img src="images/author5.jpg" alt="Lucy Tan" />
+            <span>Lucy Tan</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="project-card" data-category="Web Design">
+        <img src="images/project6.jpg" alt="Project Thumbnail" class="project-thumb" />
+        <div class="project-body">
+          <h3 class="project-title">Creative Agency Website</h3>
+          <div class="tags">
+            <span class="tag">Web Design</span>
+            <span class="tag">Agency</span>
+          </div>
+          <p class="project-desc">
+            A sleek and interactive agency website concept focusing on minimal animation and accessibility.
+          </p>
+          <div class="author">
+            <img src="images/author6.jpg" alt="Leo Perez" />
+            <span>Leo Perez</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>  
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <small>© <span id="year"></span> Profolio. All rights reserved.</small>
+      <div class="links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Update footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Filtering logic
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.project-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update active button
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const category = btn.getAttribute('data-category');
+
+        cards.forEach(card => {
+          if (category === 'all' || card.dataset.category === category) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

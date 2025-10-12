@@ -1,0 +1,288 @@
+:root {
+  --blue: #4A7387;
+  --accent: #FFD966;
+  --gray-bg: #f5f5f5;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #fff;
+}
+
+.container {
+  width: 95%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* HEADER */
+.site-header {
+  position: relative;
+  background: var(--blue);
+  color: #fff;
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.logo {
+  height: 30px;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #fff;
+}
+
+.nav a {
+  color: #fff;
+  margin-left: 1.5rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav a:hover,
+.nav a.active {
+  opacity: 0.8;
+}
+
+/* HEADER WAVE */
+.header-wave {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  line-height: 0;
+}
+
+.header-wave svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* AUTH BACKGROUND SECTION */
+.auth-bg {
+  flex: 1;
+  background: var(--gray-bg);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 5rem 1rem 6rem;
+}
+
+/* AUTH BOX */
+.auth-box {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.auth-box h2 {
+  color: var(--blue);
+  margin-bottom: 0.5rem;
+}
+
+.small-text {
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  color: #666;
+}
+
+.small-text a {
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-form input {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.auth-form button {
+  padding: 0.8rem;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.auth-form button:hover {
+  background: #3d6173;
+}
+/* =========================
+   PROFILE MODAL
+========================= */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  width: 90%;
+  max-width: 700px;
+  padding: 2rem;
+  position: relative;
+  animation: fadeInUp 0.4s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #4A7387;
+  cursor: pointer;
+}
+
+.welcome-message {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.welcome-message .emoji {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-message h2 {
+  color: #4A7387;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.welcome-message p {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  resize: none;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.save-btn {
+  background: #4A7387;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s ease;
+}
+
+.save-btn:hover {
+  background: #3a5c6e;
+}
+
+/* FOOTER */
+.site-footer {
+  background: var(--blue);
+  color: #fff;
+  text-align: center;
+  padding: 1.5rem 0;
+  margin-top: auto;
+}
+
+.footer-inner .links a {
+  color: #fff;
+  margin: 0 0.5rem;
+  text-decoration: none;
+}
+
+.footer-inner .links a:hover {
+  opacity: 0.8;
+}

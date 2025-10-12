@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Builder – Profolio</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="builder.css" />
+  <script defer src="builder.js"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="images/logo.svg" alt="Profolio Logo" class="logo">
+        <span class="brand-name">Profolio</span>
+      </a>
+
+      <nav class="nav">
+        <a href="explore.html">Explore Projects</a>
+        <a href="portfolio-builder.html" class="active">Portfolio Builder</a>
+        <a href="sign-in.html" class="btn btn-sign-in">Sign In</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BUILDER SECTION -->
+  <section class="builder-section">
+    <div class="container builder-container">
+
+      <!-- SIDEBAR -->
+      <aside class="builder-sidebar">
+        <h3>Build Your Portfolio</h3>
+        <ul id="builder-steps">
+          <li class="active" data-section="profile">Profile Info</li>
+          <li data-section="experience">Experience</li>
+          <li data-section="projects">Projects</li>
+          <li data-section="skills">Skills</li>
+          <li data-section="preview">Preview</li>
+        </ul>
+      </aside>
+
+      <!-- MAIN BUILDER -->
+      <div class="builder-main">
+
+        <!-- PROFILE SECTION -->
+        <div class="builder-step active" id="profile">
+          <h2>Profile Information</h2>
+          <p class="section-desc">Let’s start by filling out your basic details.</p>
+
+          <form class="builder-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="John Smith" required>
+              </div>
+              <div class="form-group">
+                <label for="headline">Headline</label>
+                <input type="text" id="headline" placeholder="Software Engineer | React Developer">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="about">About</label>
+              <textarea id="about" placeholder="Write a short introduction about yourself..."></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" placeholder="Manila, Philippines">
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="you@example.com">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="social">Social Links</label>
+              <input type="text" id="social" placeholder="LinkedIn, GitHub, Portfolio URL">
+            </div>
+
+            <button type="button" class="save-btn next-btn" data-next="experience">Save & Continue</button>
+          </form>
+        </div>
+
+        <!-- EXPERIENCE SECTION -->
+        <div class="builder-step" id="experience">
+          <h2>Experience</h2>
+          <p class="section-desc">Add your relevant work experiences or internships.</p>
+
+          <form class="builder-form">
+            <div class="form-group">
+              <label for="jobTitle">Job Title</label>
+              <input type="text" id="jobTitle" placeholder="Frontend Developer">
+            </div>
+
+            <div class="form-group">
+              <label for="company">Company</label>
+              <input type="text" id="company" placeholder="ABC Tech Solutions">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="month" id="startDate">
+              </div>
+              <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="month" id="endDate">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea id="description" placeholder="Describe your role and achievements..."></textarea>
+            </div>
+
+            <button type="button" class="save-btn next-btn" data-next="projects">Save & Continue</button>
+          </form>
+        </div>
+
+        <!-- PROJECTS SECTION -->
+        <div class="builder-step" id="projects">
+          <h2>Projects</h2>
+          <p class="section-desc">Showcase the projects you’ve built or contributed to.</p>
+
+          <form class="builder-form">
+            <div class="form-group">
+              <label for="projectName">Project Name</label>
+              <input type="text" id="projectName" placeholder="E-commerce Website">
+            </div>
+
+            <div class="form-group">
+              <label for="projectRole">Your Role</label>
+              <input type="text" id="projectRole" placeholder="Frontend Developer">
+            </div>
+
+            <div class="form-group">
+              <label for="projectDesc">Description</label>
+              <textarea id="projectDesc" placeholder="Explain what the project does, technologies used, etc."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="projectLink">Project Link (optional)</label>
+              <input type="url" id="projectLink" placeholder="https://github.com/yourproject">
+            </div>
+
+            <button type="button" class="save-btn next-btn" data-next="skills">Save & Continue</button>
+          </form>
+        </div>
+
+        <!-- SKILLS SECTION -->
+        <div class="builder-step" id="skills">
+          <h2>Skills</h2>
+          <p class="section-desc">List your top skills or technical proficiencies.</p>
+
+          <form class="builder-form">
+            <div class="form-group">
+              <label for="skills">Skills (comma-separated)</label>
+              <input type="text" id="skills" placeholder="HTML, CSS, JavaScript, React, Node.js">
+            </div>
+
+            <div class="form-group">
+              <label for="certifications">Certifications (optional)</label>
+              <textarea id="certifications" placeholder="Google UX Certificate, AWS Practitioner, etc."></textarea>
+            </div>
+
+            <button type="button" class="save-btn next-btn" data-next="preview">Save & Continue</button>
+          </form>
+        </div>
+
+        <!-- PREVIEW SECTION -->
+        <div class="builder-step" id="preview">
+          <h2>Portfolio Preview</h2>
+          <p class="section-desc">Here’s a quick summary of your details. You can review before publishing.</p>
+          <div class="preview-box">
+            <p>Your completed portfolio preview will appear here once all steps are filled.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <small>© <span id="year"></span> Profolio. All rights reserved.</small>
+      <div class="links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
