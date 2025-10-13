@@ -268,19 +268,27 @@ body {
   background: #3a5c6e;
 }
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 .site-footer {
-  background: var(--blue);
-  color: #fff;
+  padding: 2rem 0;
   text-align: center;
-  padding: 1.5rem 0;
-  margin-top: auto;
+  background: #4A7387;
+  color: #fff;
+}
+
+.footer-inner small {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .footer-inner .links a {
-  color: #fff;
   margin: 0 0.5rem;
-  text-decoration: none;
+  color: #fff;
+  font-size: 0.9rem;
+  transition: opacity 0.3s ease;
 }
 
 .footer-inner .links a:hover {

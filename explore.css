@@ -260,17 +260,23 @@ img {
    FOOTER
 ========================= */
 .site-footer {
+  padding: 2rem 0;
+  text-align: center;
   background: #4A7387;
   color: #fff;
-  text-align: center;
-  padding: 2rem 0;
+}
+
+.footer-inner small {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .footer-inner .links a {
   margin: 0 0.5rem;
   color: #fff;
   font-size: 0.9rem;
-  text-decoration: none;
+  transition: opacity 0.3s ease;
 }
 
 .footer-inner .links a:hover {
