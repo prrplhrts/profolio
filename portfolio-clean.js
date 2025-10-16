@@ -1,6 +1,6 @@
-// portfolio-clean.js — simplified version (no snap, no teleport)
+// portfolio-clean.js — fixed simple version (smooth, consistent positions, fixed load issue)
 document.addEventListener("DOMContentLoaded", () => {
-  const LAYOUT_KEY = "profolio_simple_layout";
+  const LAYOUT_KEY = "profolio_simple_layout_v2";
   const editDesignBtn = document.getElementById("editDesignBtn");
   const resetBtn = document.getElementById("resetLayoutBtn");
   const editContentBtn = document.getElementById("editContentBtn");
@@ -10,21 +10,34 @@ document.addEventListener("DOMContentLoaded", () => {
   let editMode = false;
   let layout = JSON.parse(localStorage.getItem(LAYOUT_KEY) || "{}");
 
-  // Helper: apply saved layout
+  // === Helpers ===
   function applyLayout() {
-    Object.entries(layout).forEach(([id, pos]) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.style.position = "absolute";
-      el.style.left = pos.left + "px";
-      el.style.top = pos.top + "px";
-      el.style.width = pos.width + "px";
-      el.style.height = pos.height + "px";
-      el.style.margin = 0;
+    portfolioContent.style.position = "relative";
+    sections.forEach(sec => {
+      const pos = layout[sec.id];
+      sec.style.transition = "none"; // prevent snapping animation
+      if (pos) {
+        sec.style.position = "absolute";
+        sec.style.left = pos.left + "px";
+        sec.style.top = pos.top + "px";
+        sec.style.width = pos.width + "px";
+        sec.style.height = pos.height + "px";
+        sec.style.margin = 0;
+      } else {
+        sec.style.position = "";
+        sec.style.left = "";
+        sec.style.top = "";
+        sec.style.width = "";
+        sec.style.height = "";
+        sec.style.margin = "";
+      }
     });
   }
 
-  // Helper: reset layout
+  function saveLayout() {
+    localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout));
+  }
+
   function resetLayout() {
     localStorage.removeItem(LAYOUT_KEY);
     layout = {};
@@ -38,131 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Load saved layout if any
-  applyLayout();
-
-  // --- ENTER EDIT MODE ---
-  function enterEditMode() {
-    editMode = true;
-    document.body.classList.add("design-mode");
-    resetBtn.classList.remove("hidden");
-    portfolioContent.style.position = "relative";
-
-    sections.forEach(sec => {
-      sec.style.position = "absolute";
-      if (!layout[sec.id]) {
-        const rect = sec.getBoundingClientRect();
-        const parent = portfolioContent.getBoundingClientRect();
-        layout[sec.id] = {
-          left: rect.left - parent.left,
-          top: rect.top - parent.top,
-          width: rect.width,
-          height: rect.height
-        };
-        sec.style.left = layout[sec.id].left + "px";
-        sec.style.top = layout[sec.id].top + "px";
-        sec.style.width = layout[sec.id].width + "px";
-        sec.style.height = layout[sec.id].height + "px";
-      }
-      sec.style.border = "2px dashed var(--blue)";
-      sec.style.cursor = "move";
-    });
-
-    // enable dragging and resizing
-    sections.forEach(sec => {
-      makeDraggableResizable(sec);
-    });
-  }
-
-  // --- EXIT EDIT MODE ---
-  function exitEditMode() {
-    editMode = false;
-    document.body.classList.remove("design-mode");
-    sections.forEach(sec => {
-      sec.style.border = "";
-      sec.style.cursor = "";
-    });
-    // save current layout
-    localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout));
-  }
-
-  // --- DRAG + RESIZE ---
-  function makeDraggableResizable(el) {
-    let startX, startY, startLeft, startTop, startW, startH, resizing = false;
-
-    el.addEventListener("mousedown", e => {
-      if (!editMode) return;
-
-      const rect = el.getBoundingClientRect();
-      const offsetRight = rect.right - e.clientX;
-      const offsetBottom = rect.bottom - e.clientY;
-
-      // check if near bottom-right corner for resizing
-      if (offsetRight < 15 && offsetBottom < 15) {
-        resizing = true;
-      } else {
-        resizing = false;
-      }
-
-      startX = e.clientX;
-      startY = e.clientY;
-      startLeft = rect.left - portfolioContent.getBoundingClientRect().left;
-      startTop = rect.top - portfolioContent.getBoundingClientRect().top;
-      startW = rect.width;
-      startH = rect.height;
-
-      function onMouseMove(ev) {
-        const dx = ev.clientX - startX;
-        const dy = ev.clientY - startY;
-
-        if (resizing) {
-          el.style.width = startW + dx + "px";
-          el.style.height = startH + dy + "px";
-        } else {
-          el.style.left = startLeft + dx + "px";
-          el.style.top = startTop + dy + "px";
-        }
-      }
-
-      function onMouseUp() {
-        // update layout
-        const rect = el.getBoundingClientRect();
-        const parent = portfolioContent.getBoundingClientRect();
-        layout[el.id] = {
-          left: rect.left - parent.left,
-          top: rect.top - parent.top,
-          width: rect.width,
-          height: rect.height
-        };
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-      }
-
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
-    });
-  }
-
-  // --- BUTTONS ---
-  editDesignBtn.addEventListener("click", () => {
-    if (!editMode) enterEditMode();
-    else exitEditMode();
-  });
-
-  resetBtn.addEventListener("click", () => {
-    if (confirm("Reset to default layout?")) {
-      resetLayout();
-      applyLayout();
-    }
-  });
-
-  if (editContentBtn) {
-    editContentBtn.addEventListener("click", () => {
-      window.location.href = "builder.html";
-    });
-  }
-
-  // --- LOAD USER DATA (simplified from builder) ---
+  // === Load user data ===
   const profile = JSON.parse(localStorage.getItem("profile") || "{}");
   const projects = JSON.parse(localStorage.getItem("projects") || "[]");
   const experience = JSON.parse(localStorage.getItem("experience") || "[]");
@@ -212,4 +101,138 @@ document.addEventListener("DOMContentLoaded", () => {
   } else skillsAndCerts.innerHTML = "<p>No skills yet.</p>";
 
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  // === Layout Load Fix ===
+  // Run applyLayout AFTER everything (fonts, images) fully loads
+  window.addEventListener("load", () => {
+    applyLayout();
+    // trigger a small reflow to fix wrong positions on some browsers
+    portfolioContent.offsetHeight;
+  });
+
+  // === Edit Mode ===
+  function enterEditMode() {
+    editMode = true;
+    document.body.classList.add("design-mode");
+    resetBtn.classList.remove("hidden");
+    portfolioContent.style.position = "relative";
+
+    sections.forEach(sec => {
+      sec.style.border = "2px dashed var(--blue)";
+      sec.style.cursor = "move";
+      sec.style.zIndex = 10;
+      sec.style.userSelect = "none";
+      if (!layout[sec.id]) {
+        const rect = sec.getBoundingClientRect();
+        const parent = portfolioContent.getBoundingClientRect();
+        layout[sec.id] = {
+          left: rect.left - parent.left,
+          top: rect.top - parent.top,
+          width: rect.width,
+          height: rect.height
+        };
+      }
+      sec.style.position = "absolute";
+      const pos = layout[sec.id];
+      sec.style.left = pos.left + "px";
+      sec.style.top = pos.top + "px";
+      sec.style.width = pos.width + "px";
+      sec.style.height = pos.height + "px";
+      makeDraggableResizable(sec);
+    });
+  }
+
+  function exitEditMode() {
+    editMode = false;
+    document.body.classList.remove("design-mode");
+    resetBtn.classList.add("hidden");
+
+    sections.forEach(sec => {
+      sec.style.border = "";
+      sec.style.cursor = "";
+      sec.style.zIndex = "";
+      sec.style.userSelect = "";
+    });
+
+    saveLayout();
+    applyLayout(); // reapply cleanly to prevent jump
+  }
+
+  // === Drag + Resize ===
+  function makeDraggableResizable(el) {
+    let startX, startY, startLeft, startTop, startW, startH, resizing = false;
+
+    function onMouseDown(e) {
+      if (!editMode) return;
+
+      const rect = el.getBoundingClientRect();
+      const parent = portfolioContent.getBoundingClientRect();
+      const offsetRight = rect.right - e.clientX;
+      const offsetBottom = rect.bottom - e.clientY;
+
+      resizing = (offsetRight < 15 && offsetBottom < 15);
+      startX = e.clientX;
+      startY = e.clientY;
+      startLeft = rect.left - parent.left;
+      startTop = rect.top - parent.top;
+      startW = rect.width;
+      startH = rect.height;
+
+      function onMouseMove(ev) {
+        const dx = ev.clientX - startX;
+        const dy = ev.clientY - startY;
+
+        if (resizing) {
+          el.style.width = startW + dx + "px";
+          el.style.height = startH + dy + "px";
+        } else {
+          el.style.left = startLeft + dx + "px";
+          el.style.top = startTop + dy + "px";
+        }
+      }
+
+      function onMouseUp() {
+        const rect = el.getBoundingClientRect();
+        const parent = portfolioContent.getBoundingClientRect();
+        layout[el.id] = {
+          left: rect.left - parent.left,
+          top: rect.top - parent.top,
+          width: rect.width,
+          height: rect.height
+        };
+        saveLayout();
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+      }
+
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    }
+
+    el.addEventListener("mousedown", onMouseDown);
+  }
+
+  // === Buttons ===
+  editDesignBtn.addEventListener("click", () => {
+    if (!editMode) enterEditMode();
+    else exitEditMode();
+  });
+
+  resetBtn.addEventListener("click", () => {
+    if (confirm("Reset layout to default positions?")) {
+      resetLayout();
+      applyLayout();
+    }
+  });
+
+  if (editContentBtn) {
+    editContentBtn.addEventListener("click", () => {
+      window.location.href = "builder.html";
+    });
+  }
+
+  // === Responsive update ===
+  window.addEventListener("resize", () => {
+    if (!editMode) applyLayout();
+  });
 });
