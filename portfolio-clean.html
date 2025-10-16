@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="portfolio-clean.css">
   <script defer src="portfolio-clean.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 </head>
 <body>
 
@@ -31,8 +32,8 @@
   <div class="toolbar">
     <button id="editContentBtn" class="tool-btn">✏️ Edit Content</button>
     <button id="editDesignBtn" class="tool-btn">🎨 Edit Design</button>
-
-    <!-- Simple design controls panel (di pa eto yon)-->
+    <button id="resetLayoutBtn" class="tool-btn hidden">♻️ Reset Layout</button>
+    
     <div id="designPanel" class="design-panel hidden" aria-hidden="true">
       <label>
         Theme:
@@ -66,7 +67,7 @@
 
         <div class="skills" id="pfSkillsBlock">
           <pre>
-            
+
           </pre>
           <h4>Skills</h4>
           <ul id="pfSkillsList"></ul>

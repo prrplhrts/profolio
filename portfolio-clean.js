@@ -1,158 +1,215 @@
-// portfolio-clean.js
+// portfolio-clean.js — simplified version (no snap, no teleport)
 document.addEventListener("DOMContentLoaded", () => {
-  const yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  // Edit buttons & design panel
-  const editContentBtn = document.getElementById("editContentBtn");
+  const LAYOUT_KEY = "profolio_simple_layout";
   const editDesignBtn = document.getElementById("editDesignBtn");
-  const designPanel = document.getElementById("designPanel");
-  const themeSelect = document.getElementById("themeSelect");
+  const resetBtn = document.getElementById("resetLayoutBtn");
+  const editContentBtn = document.getElementById("editContentBtn");
+  const portfolioContent = document.getElementById("portfolioContent");
+  const sections = Array.from(portfolioContent.querySelectorAll(".section"));
 
-  editContentBtn && editContentBtn.addEventListener("click", () => {
-    // go back to builder - preserving data in localStorage
-    window.location.href = "builder.html";
-  });
+  let editMode = false;
+  let layout = JSON.parse(localStorage.getItem(LAYOUT_KEY) || "{}");
 
-  editDesignBtn && editDesignBtn.addEventListener("click", () => {
-    designPanel.classList.toggle("hidden");
-    designPanel.setAttribute("aria-hidden", designPanel.classList.contains("hidden"));
-  });
-
-  // simple theme switcher (toggles a class)
-  if (themeSelect) {
-    themeSelect.addEventListener("change", (e) => {
-      document.documentElement.setAttribute("data-theme", e.target.value);
-      // you can expand this logic to change CSS variables or load other styles
+  // Helper: apply saved layout
+  function applyLayout() {
+    Object.entries(layout).forEach(([id, pos]) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.position = "absolute";
+      el.style.left = pos.left + "px";
+      el.style.top = pos.top + "px";
+      el.style.width = pos.width + "px";
+      el.style.height = pos.height + "px";
+      el.style.margin = 0;
     });
   }
 
-  // read localStorage data saved by builder.js
+  // Helper: reset layout
+  function resetLayout() {
+    localStorage.removeItem(LAYOUT_KEY);
+    layout = {};
+    sections.forEach(s => {
+      s.style.position = "";
+      s.style.left = "";
+      s.style.top = "";
+      s.style.width = "";
+      s.style.height = "";
+      s.style.margin = "";
+    });
+  }
+
+  // Load saved layout if any
+  applyLayout();
+
+  // --- ENTER EDIT MODE ---
+  function enterEditMode() {
+    editMode = true;
+    document.body.classList.add("design-mode");
+    resetBtn.classList.remove("hidden");
+    portfolioContent.style.position = "relative";
+
+    sections.forEach(sec => {
+      sec.style.position = "absolute";
+      if (!layout[sec.id]) {
+        const rect = sec.getBoundingClientRect();
+        const parent = portfolioContent.getBoundingClientRect();
+        layout[sec.id] = {
+          left: rect.left - parent.left,
+          top: rect.top - parent.top,
+          width: rect.width,
+          height: rect.height
+        };
+        sec.style.left = layout[sec.id].left + "px";
+        sec.style.top = layout[sec.id].top + "px";
+        sec.style.width = layout[sec.id].width + "px";
+        sec.style.height = layout[sec.id].height + "px";
+      }
+      sec.style.border = "2px dashed var(--blue)";
+      sec.style.cursor = "move";
+    });
+
+    // enable dragging and resizing
+    sections.forEach(sec => {
+      makeDraggableResizable(sec);
+    });
+  }
+
+  // --- EXIT EDIT MODE ---
+  function exitEditMode() {
+    editMode = false;
+    document.body.classList.remove("design-mode");
+    sections.forEach(sec => {
+      sec.style.border = "";
+      sec.style.cursor = "";
+    });
+    // save current layout
+    localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout));
+  }
+
+  // --- DRAG + RESIZE ---
+  function makeDraggableResizable(el) {
+    let startX, startY, startLeft, startTop, startW, startH, resizing = false;
+
+    el.addEventListener("mousedown", e => {
+      if (!editMode) return;
+
+      const rect = el.getBoundingClientRect();
+      const offsetRight = rect.right - e.clientX;
+      const offsetBottom = rect.bottom - e.clientY;
+
+      // check if near bottom-right corner for resizing
+      if (offsetRight < 15 && offsetBottom < 15) {
+        resizing = true;
+      } else {
+        resizing = false;
+      }
+
+      startX = e.clientX;
+      startY = e.clientY;
+      startLeft = rect.left - portfolioContent.getBoundingClientRect().left;
+      startTop = rect.top - portfolioContent.getBoundingClientRect().top;
+      startW = rect.width;
+      startH = rect.height;
+
+      function onMouseMove(ev) {
+        const dx = ev.clientX - startX;
+        const dy = ev.clientY - startY;
+
+        if (resizing) {
+          el.style.width = startW + dx + "px";
+          el.style.height = startH + dy + "px";
+        } else {
+          el.style.left = startLeft + dx + "px";
+          el.style.top = startTop + dy + "px";
+        }
+      }
+
+      function onMouseUp() {
+        // update layout
+        const rect = el.getBoundingClientRect();
+        const parent = portfolioContent.getBoundingClientRect();
+        layout[el.id] = {
+          left: rect.left - parent.left,
+          top: rect.top - parent.top,
+          width: rect.width,
+          height: rect.height
+        };
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+      }
+
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    });
+  }
+
+  // --- BUTTONS ---
+  editDesignBtn.addEventListener("click", () => {
+    if (!editMode) enterEditMode();
+    else exitEditMode();
+  });
+
+  resetBtn.addEventListener("click", () => {
+    if (confirm("Reset to default layout?")) {
+      resetLayout();
+      applyLayout();
+    }
+  });
+
+  if (editContentBtn) {
+    editContentBtn.addEventListener("click", () => {
+      window.location.href = "builder.html";
+    });
+  }
+
+  // --- LOAD USER DATA (simplified from builder) ---
   const profile = JSON.parse(localStorage.getItem("profile") || "{}");
-  const experience = JSON.parse(localStorage.getItem("experience") || "[]"); // might be object or array
   const projects = JSON.parse(localStorage.getItem("projects") || "[]");
+  const experience = JSON.parse(localStorage.getItem("experience") || "[]");
   const skills = JSON.parse(localStorage.getItem("skills") || "{}");
 
-  // Helper: ensure experience/projects can be arrays or single-object
-  function normalizeToArray(value) {
-    if (!value) return [];
-    if (Array.isArray(value)) return value;
-    // If it's an object with keys like jobTitle etc, treat as single-entry
-    if (typeof value === "object") return [value];
-    return [];
-  }
-
-  const expArr = normalizeToArray(experience);
-  const projArr = normalizeToArray(projects);
-
-  // Populate profile left column
-  const pfName = document.getElementById("pfName");
-  const pfHeadline = document.getElementById("pfHeadline");
-  const pfLocation = document.getElementById("pfLocation");
-  const pfAbout = document.getElementById("pfAbout");
-  const pfSkillsList = document.getElementById("pfSkillsList");
+  // Profile
+  document.getElementById("pfName").textContent = profile.name || "Your Name";
+  document.getElementById("pfHeadline").textContent = profile.headline || "";
+  document.getElementById("pfLocation").textContent = profile.location || "";
+  document.getElementById("pfAbout").textContent = profile.about || "No description yet.";
   const avatarImg = document.getElementById("avatarImg");
+  const storedImg = localStorage.getItem("profileImage");
+  if (storedImg) avatarImg.src = storedImg;
 
-  pfName.textContent = profile.name || profile.fullName || "Your Name";
-  pfHeadline.textContent = profile.headline || "";
-  pfLocation.textContent = profile.location || "";
-  pfAbout.textContent = profile.about || "A short bio will appear here once you add it in the builder.";
-
-  // Skills: either comma-separated string or array
-  const skillsRaw = skills.skills || skills.skillList || "";
-  const skillsArray = Array.isArray(skillsRaw)
-    ? skillsRaw
-    : (typeof skillsRaw === "string" ? skillsRaw.split(",").map(s => s.trim()).filter(Boolean) : []);
-
-  pfSkillsList.innerHTML = "";
-  if (skillsArray.length) {
-    skillsArray.forEach(s => {
-      const li = document.createElement("li");
-      li.textContent = s;
-      pfSkillsList.appendChild(li);
-    });
-  } else {
-    // fallback text
-    const li = document.createElement("li");
-    li.textContent = "Add skills in the builder";
-    li.style.background = "#fff0";
-    li.style.color = "#999";
-    pfSkillsList.appendChild(li);
-  }
-
-  // Projects listing
+  // Projects
   const projectsList = document.getElementById("projectsList");
-  projectsList.innerHTML = "";
-  if (projArr.length) {
-    projArr.forEach(p => {
-      const item = document.createElement("div");
-      item.className = "preview-item";
-      const name = p.projectName || p.title || "Untitled Project";
-      const role = p.projectRole ? ` — ${p.projectRole}` : "";
-      const desc = p.projectDesc || p.description || "";
-      const link = p.projectLink || p.link || "";
+  if (projects.length) {
+    projectsList.innerHTML = projects.map(p => `
+      <div class="preview-item">
+        <h4>${p.projectName || ""}</h4>
+        ${p.projectImage ? `<img src="${p.projectImage}" style="max-width:100%;border-radius:8px;margin:.5rem 0;">` : ""}
+        <p>${p.projectDesc || ""}</p>
+        ${p.projectLink ? `<a href="${p.projectLink}" target="_blank">${p.projectLink}</a>` : ""}
+      </div>
+    `).join("");
+  } else projectsList.innerHTML = "<p>No projects yet.</p>";
 
-      item.innerHTML = `<h4>${escapeHtml(name)}${escapeHtml(role)}</h4>
-                        <p>${escapeHtml(desc)}</p>
-                        ${link ? `<a href="${escapeAttr(link)}" target="_blank" rel="noopener">${escapeHtml(link)}</a>` : ""}`;
-      projectsList.appendChild(item);
-    });
-  } else {
-    projectsList.innerHTML = `<p class="empty">No projects added yet. Add them in the builder.</p>`;
-  }
-
-  // Experience listing
+  // Experience
   const experienceList = document.getElementById("experienceList");
-  experienceList.innerHTML = "";
-  if (expArr.length) {
-    expArr.forEach(e => {
-      const item = document.createElement("div");
-      item.className = "preview-item";
-      const title = e.jobTitle || e.role || "";
-      const company = e.company || "";
-      const start = e.startDate || "";
-      const end = e.endDate || e.end || "Present";
-      const desc = e.description || "";
+  if (experience.length) {
+    experienceList.innerHTML = experience.map(e => `
+      <div class="preview-item">
+        <h4>${e.jobTitle || ""}${e.company ? ` — ${e.company}` : ""}</h4>
+        <p>${e.startDate || ""} → ${e.endDate || "Present"}</p>
+        <p>${e.description || ""}</p>
+      </div>
+    `).join("");
+  } else experienceList.innerHTML = "<p>No experience yet.</p>";
 
-      item.innerHTML = `<h4>${escapeHtml(title)} ${company ? `— ${escapeHtml(company)}` : ""}</h4>
-                        <p class="duration">${escapeHtml(start)} ${start || end ? "→" : ""} ${escapeHtml(end)}</p>
-                        <p>${escapeHtml(desc)}</p>`;
-      experienceList.appendChild(item);
-    });
-  } else {
-    experienceList.innerHTML = `<p class="empty">No experience added yet. Add entries in the builder.</p>`;
-  }
-
-  // Skills & certifications block (right column)
+  // Skills
   const skillsAndCerts = document.getElementById("skillsAndCerts");
-  skillsAndCerts.innerHTML = "";
-  if (skillsArray.length || (skills.certifications && skills.certifications.trim())) {
-    if (skillsArray.length) {
-      const skillsEl = document.createElement("div");
-      skillsEl.className = "preview-item";
-      skillsEl.innerHTML = `<strong>Skills:</strong> ${escapeHtml(skillsArray.join(", "))}`;
-      skillsAndCerts.appendChild(skillsEl);
-    }
-    if (skills.certifications && skills.certifications.trim()) {
-      const certEl = document.createElement("div");
-      certEl.className = "preview-item";
-      certEl.innerHTML = `<strong>Certifications:</strong> ${escapeHtml(skills.certifications)}`;
-      skillsAndCerts.appendChild(certEl);
-    }
-  } else {
-    skillsAndCerts.innerHTML = `<p class="empty">No skills/certifications added yet.</p>`;
-  }
+  if (skills.skills || skills.certifications) {
+    skillsAndCerts.innerHTML = `
+      <div><strong>Skills:</strong> ${skills.skills || "N/A"}</div>
+      <div><strong>Certifications:</strong> ${skills.certifications || "N/A"}</div>
+    `;
+  } else skillsAndCerts.innerHTML = "<p>No skills yet.</p>";
 
-  // helper: escape to avoid injecting raw HTML from storage
-  function escapeHtml(str) {
-    if (!str && str !== 0) return "";
-    return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-  function escapeAttr(s) { return escapeHtml(s).replace(/"/g, "&quot;"); }
-
+  document.getElementById("year").textContent = new Date().getFullYear();
 });

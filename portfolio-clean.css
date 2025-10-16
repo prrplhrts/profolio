@@ -290,7 +290,12 @@ a:focus, button:focus {
 .footer-inner .links a:hover {
   opacity: 0.8;
 }
-
+#resetLayoutBtn {
+  background: #ff5757;
+}
+#resetLayoutBtn:hover {
+  background: #d44b4b;
+}
 /* =========================
    RESPONSIVE
 ========================= */
@@ -303,4 +308,36 @@ a:focus, button:focus {
     flex-wrap: wrap;
     justify-content: center;
   }
+}
+
+/* =========================
+   DESIGN MODE GRID VISUAL
+========================= */
+body.design-mode .portfolio-content {
+  position: relative;
+  display: block !important; /* disable grid layout */
+  min-height: 800px;
+  background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 80px 80px;
+  transition: background 0.3s;
+}
+
+body.design-mode .portfolio-content .section {
+  position: absolute;
+  cursor: move;
+  border: 1px dashed var(--blue);
+  user-select: none;
+  z-index: 10;
+}
+
+body:not(.design-mode) .portfolio-content .section {
+  position: relative;
+  border: none;
+  cursor: default;
+}
+
+.resizing {
+  opacity: 0.85;
+  border-style: solid !important;
 }
