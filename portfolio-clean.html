@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Portfolio – Profolio (Clean)</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="portfolio-clean.css">
+  <script defer src="portfolio-clean.js"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="images/logo.svg" alt="Profolio Logo" class="logo">
+        <span class="brand-name">Profolio</span>
+      </a>
+
+      <nav class="nav">
+        <a href="explore.html">Explore Projects</a>
+        <a href="builder.html">Portfolio Builder</a>
+        <a href="sign-in.html">Sign In</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- EDIT CONTROLS / TOOLBAR -->
+  <div class="toolbar">
+    <button id="editContentBtn" class="tool-btn">✏️ Edit Content</button>
+    <button id="editDesignBtn" class="tool-btn">🎨 Edit Design</button>
+
+    <!-- Simple design controls panel (di pa eto yon)-->
+    <div id="designPanel" class="design-panel hidden" aria-hidden="true">
+      <label>
+        Theme:
+        <select id="themeSelect">
+          <option value="clean">Clean (default)</option>
+          <option value="contrast">High Contrast</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <!-- MAIN PORTFOLIO -->
+  <main class="portfolio-main">
+    <div class="container portfolio-container">
+
+      <!-- LEFT PROFILE -->
+      <aside class="profile-card" id="profileCard">
+        <div class="avatar" id="avatarWrap">
+          <!-- image injected by JS wala pang upload sa generate lol -->
+          <img id="avatarImg" src="images/profile-placeholder.jpg" alt="Profile" />
+        </div>
+
+        <h2 id="pfName">Your Name</h2>
+        <p class="headline" id="pfHeadline">Your Headline</p>
+        <p class="location" id="pfLocation">Location</p>
+
+        <div class="about" id="pfAboutBlock">
+          <h4>About</h4>
+          <p id="pfAbout">A short bio will appear here once you add it in the builder.</p>
+        </div>
+
+        <div class="skills" id="pfSkillsBlock">
+          <h4>Skills</h4>
+          <ul id="pfSkillsList"></ul>
+        </div>
+      </aside>
+
+      <!-- RIGHT CONTENT -->
+      <section class="portfolio-content" id="portfolioContent">
+
+        <!-- Projects (rendered by JS) -->
+        <div class="section" id="projectsSection">
+          <div class="section-header"><h3>Projects</h3></div>
+          <div id="projectsList"></div>
+        </div>
+
+        <!-- Experience -->
+        <div class="section" id="experienceSection">
+          <div class="section-header"><h3>Experience</h3></div>
+          <div id="experienceList"></div>
+        </div>
+
+        <!-- Skills & Certifications -->
+        <div class="section" id="extraSection">
+          <div class="section-header"><h3>Skills & Certifications</h3></div>
+          <div id="skillsAndCerts"></div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <small>© <span id="year"></span> Profolio. All rights reserved.</small>
+      <div class="links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

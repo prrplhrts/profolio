@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Portfolio Theme – Profolio</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="portfolio-theme.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="images/logo.svg" alt="Profolio Logo" class="logo">
+        <span class="brand-name">Profolio</span>
+      </a>
+      <nav class="nav">
+        <a href="explore.html">Explore Projects</a>
+        <a href="portfolio-builder.html">Portfolio Builder</a>
+        <a href="sign-in.html">Sign In</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- THEME SELECTION -->
+  <section class="theme-section">
+    <div class="container">
+      <h2>Select Your Portfolio Theme</h2>
+      <p class="desc">Choose a design that best represents your style. You can customize it later.</p>
+
+      <div class="themes-grid">
+        <div class="theme-card">
+          <img src="images/theme-clean.png" alt="Clean Theme Preview">
+          <h3>Clean Theme</h3>
+          <button class="select-btn" onclick="selectTheme('clean')">Select</button>
+        </div>
+        <div class="theme-card">
+          <img src="images/theme-modern.png" alt="Modern Theme Preview">
+          <h3>Modern Theme</h3>
+          <button class="select-btn" onclick="selectTheme('modern')">Select</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <small>© <span id="year"></span> Profolio. All rights reserved.</small>
+      <div class="links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    function selectTheme(theme) {
+      localStorage.setItem("selectedTheme", theme);
+      window.location.href = `portfolio-${theme}.html`;
+    }
+  </script>
+</body>
+</html>

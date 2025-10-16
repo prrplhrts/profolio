@@ -176,8 +176,8 @@ textarea {
   background: var(--blue);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 0.9rem;
+  border-radius: 10px;
+  padding: 1rem ;
   font-weight: 600;
   cursor: pointer;
   width: 100%;
@@ -186,6 +186,44 @@ textarea {
 
 .save-btn:hover {
   background: #3a5c6e;
+}
+/* =========================
+   UPLOAD RESUME BOX
+========================= */
+.upload-resume-box {
+  background: #f9f9f9;
+  border: 2px dashed var(--blue);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.upload-text {
+  color: #333;
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+}
+
+.upload-btn {
+  display: inline-block;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.upload-btn:hover {
+  background: #3a5c6e;
+}
+
+.upload-status {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
 }
 
 /* =========================
@@ -242,10 +280,89 @@ textarea {
 }
 
 .preview-box {
-  background: #f9f9f9;
+  background: #fafafa;
   padding: 2rem;
   border-radius: 12px;
-  text-align: center;
-  color: #666;
   border: 1px solid #ddd;
+  color: #333;
 }
+
+.preview-card {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.preview-header {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1rem;
+}
+
+.preview-header h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--blue);
+}
+
+.preview-header .headline {
+  font-weight: 500;
+  color: #444;
+  margin-top: 0.3rem;
+}
+
+.preview-header .about {
+  margin-top: 0.5rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+.preview-header .contact {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.preview-section {
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 1rem;
+}
+
+.preview-section:last-child {
+  border: none;
+}
+
+.preview-section h4 {
+  color: var(--blue);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.preview-item {
+  margin-left: 1rem;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.preview-item .duration {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.preview-item a {
+  color: var(--blue);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.preview-item a:hover {
+  text-decoration: underline;
+}
+
+.preview-section .empty {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-left: 1rem;
+}
+
+

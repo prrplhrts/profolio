@@ -21,7 +21,7 @@
 
       <nav class="nav">
         <a href="explore.html">Explore Projects</a>
-        <a href="portfolio-builder.html" class="active">Portfolio Builder</a>
+        <a href="builder.html" class="active">Portfolio Builder</a>
         <a href="sign-in.html" class="btn btn-sign-in">Sign In</a>
       </nav>
     </div>
@@ -34,6 +34,15 @@
       <!-- SIDEBAR -->
       <aside class="builder-sidebar">
         <h3>Build Your Portfolio</h3>
+
+        <!-- RESUME UPLOAD BOX -->
+        <div class="upload-resume-box">
+          <p class="upload-text">You can <strong>upload your resume</strong> to fill details automatically or <br> fill them out manually below.</p>
+          <label for="resumeUpload" class="upload-btn">Upload Resume</label>
+          <input type="file" id="resumeUpload" accept=".pdf,.doc,.docx" hidden />
+          <p id="uploadStatus" class="upload-status"></p>
+        </div>
+
         <ul id="builder-steps">
           <li class="active" data-section="profile">Profile Info</li>
           <li data-section="experience">Experience</li>
@@ -178,9 +187,14 @@
         <div class="builder-step" id="preview">
           <h2>Portfolio Preview</h2>
           <p class="section-desc">Here’s a quick summary of your details. You can review before publishing.</p>
+
           <div class="preview-box">
             <p>Your completed portfolio preview will appear here once all steps are filled.</p>
           </div>
+          <pre>
+          <!--andito lang to kasi di ko malagyan space for some reason lolmao-->        
+          </pre>
+          <button type="button" id="generatePortfolio" class="save-btn">Generate Portfolio</button>
         </div>
 
       </div>
@@ -197,6 +211,6 @@
       </div>
     </div>
   </footer>
-  
+
 </body>
 </html>

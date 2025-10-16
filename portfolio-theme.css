@@ -1,0 +1,146 @@
+:root {
+  --blue: #4A7387;
+  --gray-bg: #f5f5f5;
+  --accent: #FFD966;
+  --text: #333;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  background: var(--gray-bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  width: 95%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+.site-header {
+  background: var(--blue);
+  padding: 0.8rem 0;
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+  gap: 0.5rem;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.logo {
+  height: 25px;
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 500;
+}
+
+.nav a:hover {
+  opacity: 0.8;
+}
+
+/* THEME SECTION */
+.theme-section {
+  text-align: center;
+  padding: 4rem 0;
+  flex: 1;
+}
+
+.theme-section h2 {
+  color: var(--blue);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.theme-section .desc {
+  color: #666;
+  margin-bottom: 3rem;
+}
+
+.themes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.theme-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.theme-card:hover {
+  transform: translateY(-5px);
+}
+
+.theme-card img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.theme-card h3 {
+  color: var(--blue);
+}
+
+.select-btn {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.select-btn:hover {
+  background: #3a5c6e;
+}
+
+/* FOOTER */
+.site-footer {
+  background: var(--blue);
+  color: #fff;
+  text-align: center;
+  padding: 2rem 0;
+  margin-top: auto;
+}
+
+.footer-inner .links a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+
+.footer-inner .links a:hover {
+  opacity: 0.8;
+}
