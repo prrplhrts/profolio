@@ -365,4 +365,49 @@ textarea {
   margin-left: 1rem;
 }
 
+.experience-item,
+.project-item,
+.education-item {
+  border-bottom: 1px solid #dcdcdc;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
 
+.experience-item:last-child,
+.project-item:last-child,
+.education-item:last-child {
+  border-bottom: none;
+}
+
+.remove-btn {
+  margin-top: 0.8rem;
+  background: #c0392b;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.remove-btn:hover {
+  background: #a83224;
+}
+
+.preview-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 2px solid #ccc;
+}
+.builder-form .form-group {
+  margin-bottom: 1rem;
+}

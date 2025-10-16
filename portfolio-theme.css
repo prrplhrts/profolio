@@ -29,40 +29,42 @@ body {
 /* HEADER */
 .site-header {
   background: var(--blue);
-  padding: 0.8rem 0;
+  color: #fff;
 }
 
 .header-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem 2rem;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  text-decoration: none;
-  color: #fff;
   gap: 0.5rem;
+  text-decoration: none;
 }
 
 .brand-name {
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  color: #fff;
 }
 
 .logo {
-  height: 25px;
+  height: 30px;
+  width: auto;
 }
 
 .nav a {
   color: #fff;
-  text-decoration: none;
   margin-left: 1.5rem;
+  text-decoration: none;
   font-weight: 500;
 }
 
-.nav a:hover {
+.nav a.active {
   opacity: 0.8;
 }
 

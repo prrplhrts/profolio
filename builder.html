@@ -35,18 +35,17 @@
       <aside class="builder-sidebar">
         <h3>Build Your Portfolio</h3>
 
-        <!-- RESUME UPLOAD BOX -->
         <div class="upload-resume-box">
-          <p class="upload-text">You can <strong>upload your resume</strong> to fill details automatically or <br> fill them out manually below.</p>
+          <p class="upload-text">You can <strong>upload your resume</strong> to fill details automatically or fill them manually below.</p>
           <label for="resumeUpload" class="upload-btn">Upload Resume</label>
           <input type="file" id="resumeUpload" accept=".pdf,.doc,.docx" hidden />
-          <p id="uploadStatus" class="upload-status"></p>
         </div>
 
         <ul id="builder-steps">
           <li class="active" data-section="profile">Profile Info</li>
           <li data-section="experience">Experience</li>
           <li data-section="projects">Projects</li>
+          <li data-section="education">Education</li>
           <li data-section="skills">Skills</li>
           <li data-section="preview">Preview</li>
         </ul>
@@ -55,12 +54,17 @@
       <!-- MAIN BUILDER -->
       <div class="builder-main">
 
-        <!-- PROFILE SECTION -->
+        <!-- PROFILE -->
         <div class="builder-step active" id="profile">
           <h2>Profile Information</h2>
-          <p class="section-desc">Let’s start by filling out your basic details.</p>
+          <p class="section-desc">Add your basic info and profile picture.</p>
 
-          <form class="builder-form">
+          <form class="builder-form" id="profileForm">
+            <div class="form-group">
+              <label for="profileImage">Profile Picture</label>
+              <input type="file" id="profileImage" accept="image/*" />
+            </div>
+
             <div class="form-row">
               <div class="form-group">
                 <label for="name">Full Name</label>
@@ -88,112 +92,71 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="social">Social Links</label>
-              <input type="text" id="social" placeholder="LinkedIn, GitHub, Portfolio URL">
-            </div>
-
             <button type="button" class="save-btn next-btn" data-next="experience">Save & Continue</button>
           </form>
         </div>
 
-        <!-- EXPERIENCE SECTION -->
+        <!-- EXPERIENCE -->
         <div class="builder-step" id="experience">
           <h2>Experience</h2>
-          <p class="section-desc">Add your relevant work experiences or internships.</p>
+          <p class="section-desc">Add multiple work experiences or internships.</p>
 
-          <form class="builder-form">
-            <div class="form-group">
-              <label for="jobTitle">Job Title</label>
-              <input type="text" id="jobTitle" placeholder="Frontend Developer">
-            </div>
+          <form class="builder-form" id="experienceForm">
+            <div id="experienceList"></div>
 
-            <div class="form-group">
-              <label for="company">Company</label>
-              <input type="text" id="company" placeholder="ABC Tech Solutions">
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="startDate">Start Date</label>
-                <input type="month" id="startDate">
-              </div>
-              <div class="form-group">
-                <label for="endDate">End Date</label>
-                <input type="month" id="endDate">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="description">Description</label>
-              <textarea id="description" placeholder="Describe your role and achievements..."></textarea>
-            </div>
-
+            <button type="button" id="addExperience" class="save-btn">+ Add Experience</button>
             <button type="button" class="save-btn next-btn" data-next="projects">Save & Continue</button>
           </form>
         </div>
 
-        <!-- PROJECTS SECTION -->
+        <!-- PROJECTS -->
         <div class="builder-step" id="projects">
           <h2>Projects</h2>
-          <p class="section-desc">Showcase the projects you’ve built or contributed to.</p>
+          <p class="section-desc">Add multiple projects you’ve built or contributed to.</p>
 
-          <form class="builder-form">
-            <div class="form-group">
-              <label for="projectName">Project Name</label>
-              <input type="text" id="projectName" placeholder="E-commerce Website">
-            </div>
+          <form class="builder-form" id="projectForm">
+            <div id="projectList"></div>
 
-            <div class="form-group">
-              <label for="projectRole">Your Role</label>
-              <input type="text" id="projectRole" placeholder="Frontend Developer">
-            </div>
+            <button type="button" id="addProject" class="save-btn">+ Add Project</button>
+            <button type="button" class="save-btn next-btn" data-next="education">Save & Continue</button>
+          </form>
+        </div>
 
-            <div class="form-group">
-              <label for="projectDesc">Description</label>
-              <textarea id="projectDesc" placeholder="Explain what the project does, technologies used, etc."></textarea>
-            </div>
+        <!-- EDUCATION -->
+        <div class="builder-step" id="education">
+          <h2>Education</h2>
+          <p class="section-desc">Add your education history.</p>
 
-            <div class="form-group">
-              <label for="projectLink">Project Link (optional)</label>
-              <input type="url" id="projectLink" placeholder="https://github.com/yourproject">
-            </div>
-
+          <form class="builder-form" id="educationForm">
+            <div id="educationList"></div>
+            <button type="button" id="addEducation" class="save-btn">+ Add Education</button>
             <button type="button" class="save-btn next-btn" data-next="skills">Save & Continue</button>
           </form>
         </div>
 
-        <!-- SKILLS SECTION -->
+        <!-- SKILLS -->
         <div class="builder-step" id="skills">
           <h2>Skills</h2>
-          <p class="section-desc">List your top skills or technical proficiencies.</p>
+          <p class="section-desc">List your top skills and certifications.</p>
 
-          <form class="builder-form">
+          <form class="builder-form" id="skillsForm">
             <div class="form-group">
-              <label for="skills">Skills (comma-separated)</label>
-              <input type="text" id="skills" placeholder="HTML, CSS, JavaScript, React, Node.js">
+              <label for="skillsInput">Skills (comma-separated)</label>
+              <input type="text" id="skillsInput" placeholder="HTML, CSS, JavaScript, React, Node.js">
             </div>
-
             <div class="form-group">
-              <label for="certifications">Certifications (optional)</label>
-              <textarea id="certifications" placeholder="Google UX Certificate, AWS Practitioner, etc."></textarea>
+              <label for="certifications">Certifications</label>
+              <textarea id="certifications" placeholder="Google UX, AWS, etc."></textarea>
             </div>
-
             <button type="button" class="save-btn next-btn" data-next="preview">Save & Continue</button>
           </form>
         </div>
 
-        <!-- PREVIEW SECTION -->
+        <!-- PREVIEW -->
         <div class="builder-step" id="preview">
           <h2>Portfolio Preview</h2>
-          <p class="section-desc">Here’s a quick summary of your details. You can review before publishing.</p>
-
-          <div class="preview-box">
-            <p>Your completed portfolio preview will appear here once all steps are filled.</p>
-          </div>
-          <pre>
-          <!--andito lang to kasi di ko malagyan space for some reason lolmao-->        
-          </pre>
+          <p class="section-desc">Review all your details before generating your portfolio.</p>
+          <div class="preview-box"></div>
           <button type="button" id="generatePortfolio" class="save-btn">Generate Portfolio</button>
         </div>
 
@@ -202,7 +165,7 @@
   </section>
 
   <!-- FOOTER -->
-  <footer id="contact" class="site-footer">
+  <footer class="site-footer">
     <div class="container footer-inner">
       <small>© <span id="year"></span> Profolio. All rights reserved.</small>
       <div class="links">
@@ -211,6 +174,5 @@
       </div>
     </div>
   </footer>
-
 </body>
 </html>
