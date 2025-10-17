@@ -341,3 +341,32 @@ body:not(.design-mode) .portfolio-content .section {
   opacity: 0.85;
   border-style: solid !important;
 }
+
+.hidden {
+  display: none !important;
+}
+
+/* Resize handle (only visible in edit mode) */
+.section .resize-handle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  background: var(--blue);
+  border-radius: 3px;
+  cursor: nwse-resize;
+  display: none;
+}
+
+body.design-mode .section .resize-handle {
+  display: block;
+}
+
+.custom-img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 10px;
+  display: block;
+
+}

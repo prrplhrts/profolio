@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Portfolio – Profolio (Clean)</title>
+  <title>Portfolio – Profolio</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="portfolio-clean.css">
@@ -30,9 +30,12 @@
 
   <!-- EDIT CONTROLS / TOOLBAR -->
   <div class="toolbar">
-    <button id="editContentBtn" class="tool-btn">✏️ Edit Content</button>
-    <button id="editDesignBtn" class="tool-btn">🎨 Edit Design</button>
-    <button id="resetLayoutBtn" class="tool-btn hidden">♻️ Reset Layout</button>
+    <button id="editContentBtn" class="tool-btn">Edit Content</button>
+    <button id="editDesignBtn" class="tool-btn">Edit Design</button>
+    <button id="resetLayoutBtn" class="tool-btn hidden">Reset Layout</button>
+    <button id="addCustomSectionBtn" class="tool-btn hidden">+ Add Section</button>
+    <button id="saveDesignBtn" class="hidden">Save Design</button>
+
     
     <div id="designPanel" class="design-panel hidden" aria-hidden="true">
       <label>
@@ -94,7 +97,12 @@
           <div class="section-header"><h3>Skills & Certifications</h3></div>
           <div id="skillsAndCerts"></div>
         </div>
-
+        
+        <!-- EDUCATION -->
+        <div class="section" id="educationSection">
+          <div class="section-header"><h3>Education</h3></div>
+          <div id="educationList"></div>
+        </div>
       </section>
     </div>
   </main>
