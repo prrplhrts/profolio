@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     signInForm.addEventListener("submit", (e) => {
       e.preventDefault();
       localStorage.setItem("isLoggedIn", "true");
-      window.location.href = "portfolio-builder.html";
+      window.location.href = "builder.html";
     });
   }
 });
