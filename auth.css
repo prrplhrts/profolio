@@ -100,7 +100,7 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   padding: 2.5rem;
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   text-align: center;
 }
 
@@ -110,7 +110,7 @@ body {
 }
 
 .small-text {
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin-bottom: 1.5rem;
   color: #666;
 }

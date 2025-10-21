@@ -88,10 +88,16 @@ body {
 
 .themes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr); /* Always 2 per row */
+  gap: 2.5rem;
+  justify-items: center;
 }
 
+@media (max-width: 768px) {
+  .themes-grid {
+    grid-template-columns: 1fr;
+  }
+}
 .theme-card {
   background: #fff;
   border-radius: 12px;

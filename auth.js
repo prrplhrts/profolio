@@ -2,33 +2,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  const signUpForm = document.querySelector(".auth-form");
-  const modal = document.getElementById("profileModal");
-  const closeBtn = document.getElementById("closeProfileModal");
+  const signUpForm = document.getElementById("signUpForm");
 
-  if (signUpForm && modal) {
-    signUpForm.addEventListener("submit", (e) => {
+  if (signUpForm) {
+    signUpForm.addEventListener("submit", e => {
       e.preventDefault();
 
-      // Pretend to register user
-      localStorage.setItem("isLoggedIn", "true");
-      modal.classList.add("show");
-      document.body.style.overflow = "hidden";
-    });
-  }
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
 
-  if (closeBtn && modal) {
-    closeBtn.addEventListener("click", () => {
-      modal.classList.remove("show");
-      document.body.style.overflow = "";
-    });
-  }
+      if (!email || !password) {
+        alert("Please fill out all required fields.");
+        return;
+      }
 
-  const signInForm = document.querySelector(".auth-form");
-  if (signInForm && !modal) {
-    signInForm.addEventListener("submit", (e) => {
-      e.preventDefault();
+      if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      // Simulate account creation (temporary needs backend para gumana)
+      localStorage.setItem("userEmail", email);
       localStorage.setItem("isLoggedIn", "true");
+
+      // Redirect after finishing
       window.location.href = "builder.html";
     });
   }

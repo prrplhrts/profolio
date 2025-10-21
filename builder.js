@@ -79,16 +79,16 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="form-row">
         <div class="form-group">
           <label>Start Date</label>
-          <input type="month" class="startDate" value="${prefill.startDate || ""}">
+          <input type="text" class="startDate" value="${prefill.startDate || ""}" placeholder=>
         </div>
         <div class="form-group">
           <label>End Date</label>
-          <input type="month" class="endDate" value="${prefill.endDate || ""}">
+          <input type="text" class="endDate" value="${prefill.endDate || ""}" placeholder="">
         </div>
       </div>
       <div class="form-group">
         <label>Description</label>
-        <textarea class="description">${prefill.description || ""}</textarea>
+        <textarea class="description" placeholder="Describe your responsibilities...">${prefill.description || ""}</textarea>
       </div>
     `;
     div.appendChild(createRemoveButton(div, "experience"));

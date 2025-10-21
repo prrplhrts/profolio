@@ -240,10 +240,7 @@ a {
   box-shadow: 0 6px 12px rgba(0,0,0,0.1);
 }
 
-.theme-card img {
-  height: 180px;
-  object-fit: cover;
-}
+
 
 .theme-card h3 {
   padding: 1rem;
