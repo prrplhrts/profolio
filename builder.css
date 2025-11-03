@@ -411,3 +411,9 @@ textarea {
 .builder-form .form-group {
   margin-bottom: 1rem;
 }
+.warning {
+  font-size: 0.85rem;
+  color: #c0392b;
+  margin-top: 4px;
+  display: block;
+}

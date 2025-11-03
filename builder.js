@@ -78,12 +78,26 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>Start Date</label>
-          <input type="text" class="startDate" value="${prefill.startDate || ""}" placeholder=>
+          <label>Start Year</label>
+          <input 
+            type="number" 
+            class="startDate" 
+            min="1900" 
+            max="2100" 
+            step="1" 
+            value="${prefill.startDate || new Date().getFullYear()}" 
+          >
         </div>
         <div class="form-group">
-          <label>End Date</label>
-          <input type="text" class="endDate" value="${prefill.endDate || ""}" placeholder="">
+          <label>End Year</label>
+          <input 
+            type="number" 
+            class="endDate" 
+            min="1900" 
+            max="2100" 
+            step="1" 
+            value="${prefill.endDate || new Date().getFullYear()}" 
+          >
         </div>
       </div>
       <div class="form-group">
@@ -137,11 +151,25 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="form-row">
         <div class="form-group">
           <label>Start Year</label>
-          <input type="text" class="eduStart" value="${prefill.eduStart || ""}" placeholder="">
+          <input 
+            type="number" 
+            class="eduStart" 
+            min="1900" 
+            max="2100" 
+            step="1" 
+            value="${prefill.eduStart || new Date().getFullYear()}"
+          >
         </div>
         <div class="form-group">
           <label>End Year</label>
-          <input type="text" class="eduEnd" value="${prefill.eduEnd || ""}" placeholder="">
+          <input 
+            type="number" 
+            class="eduEnd" 
+            min="1900" 
+            max="2100" 
+            step="1" 
+            value="${prefill.eduEnd || new Date().getFullYear()}"
+          >
         </div>
       </div>
     `;
@@ -150,33 +178,91 @@ document.addEventListener("DOMContentLoaded", () => {
     updateRemoveButtonsVisibility("education");
   }
 
-
   /* =====================
      SAVE STEP
   ===================== */
   function saveStep(id) {
     let data = {};
+    let isValid = true;
+
+    // Helper to show warnings
+    function showWarning(input, message) {
+      let warning = input.parentElement.querySelector(".warning");
+      if (!warning) {
+        warning = document.createElement("small");
+        warning.className = "warning";
+        warning.style.color = "#c0392b";
+        warning.style.marginTop = "4px";
+        input.parentElement.appendChild(warning);
+      }
+      warning.textContent = message;
+    }
+
+    // Helper to clear warnings
+    function clearWarnings(form) {
+      form.querySelectorAll(".warning").forEach(w => w.remove());
+    }
+
+    // EXPERIENCE VALIDATION
     if (id === "experience") {
-      data = [...document.querySelectorAll(".experience-item")].map(item => ({
-        jobTitle: item.querySelector(".jobTitle").value,
-        company: item.querySelector(".company").value,
-        startDate: item.querySelector(".startDate").value,
-        endDate: item.querySelector(".endDate").value,
-        description: item.querySelector(".description").value
-      }));
-    } else if (id === "projects") {
+      clearWarnings(document.getElementById("experienceForm"));
+      const items = document.querySelectorAll(".experience-item");
+      data = [...items].map(item => {
+        const jobTitle = item.querySelector(".jobTitle");
+        const company = item.querySelector(".company");
+        const start = item.querySelector(".startDate");
+        const end = item.querySelector(".endDate");
+        const desc = item.querySelector(".description");
+
+        if (!jobTitle.value.trim() || !company.value.trim() || !desc.value.trim()) {
+          isValid = false;
+          if (!jobTitle.value.trim()) showWarning(jobTitle, "Job title required");
+          if (!company.value.trim()) showWarning(company, "Company required");
+          if (!desc.value.trim()) showWarning(desc, "Description required");
+        }
+
+        return {
+          jobTitle: jobTitle.value,
+          company: company.value,
+          startDate: start.value,
+          endDate: end.value,
+          description: desc.value
+        };
+      });
+    }
+
+    // EDUCATION VALIDATION
+    else if (id === "education") {
+      clearWarnings(document.getElementById("educationForm"));
+      const items = document.querySelectorAll(".education-item");
+      data = [...items].map(item => {
+        const school = item.querySelector(".school");
+        const degree = item.querySelector(".degree");
+        const start = item.querySelector(".eduStart");
+        const end = item.querySelector(".eduEnd");
+
+        if (!school.value.trim() || !degree.value.trim()) {
+          isValid = false;
+          if (!school.value.trim()) showWarning(school, "School required");
+          if (!degree.value.trim()) showWarning(degree, "Degree required");
+        }
+
+        return {
+          school: school.value,
+          degree: degree.value,
+          eduStart: start.value,
+          eduEnd: end.value
+        };
+      });
+    }
+
+    // OTHER SECTIONS (same as before)
+    else if (id === "projects") {
       data = [...document.querySelectorAll(".project-item")].map(item => ({
         projectName: item.querySelector(".projectName").value,
         projectRole: item.querySelector(".projectRole").value,
         projectDesc: item.querySelector(".projectDesc").value,
         projectLink: item.querySelector(".projectLink").value
-      }));
-    } else if (id === "education") {
-      data = [...document.querySelectorAll(".education-item")].map(item => ({
-        school: item.querySelector(".school").value,
-        degree: item.querySelector(".degree").value,
-        eduStart: item.querySelector(".eduStart").value,
-        eduEnd: item.querySelector(".eduEnd").value
       }));
     } else if (id === "skills") {
       data = {
@@ -192,6 +278,14 @@ document.addEventListener("DOMContentLoaded", () => {
         email: document.getElementById("email").value
       };
     }
+
+    // Stop navigation if invalid
+    if (!isValid) {
+      alert("Please fill in all required fields before continuing.");
+      return;
+    }
+
+    // Save valid data
     localStorage.setItem(id, JSON.stringify(data));
   }
 

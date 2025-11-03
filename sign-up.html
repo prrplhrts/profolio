@@ -6,10 +6,9 @@
   <title>Sign Up – Profolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="auth.css" />
-  <script src="auth.js"></script>
+  <script defer src="auth.js"></script>
 </head>
 <body>
-  <!-- HEADER -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="brand">
@@ -23,7 +22,6 @@
       </nav>
     </div>
 
-    <!-- Header Wave -->
     <div class="header-wave">
       <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M0,64 C360,160 1080,0 1440,96 L1440,120 L0,120 Z" fill="#f5f5f5" />
@@ -31,22 +29,40 @@
     </div>
   </header>
 
-  <!-- AUTH BACKGROUND SECTION -->
   <section class="auth-bg">
     <div class="auth-box">
       <h2>Sign Up</h2>
       <p class="small-text">Already have an account? <a href="sign-in.html">Sign in →</a></p>
+
       <form class="auth-form">
         <input type="email" placeholder="Enter your email" required />
-        <input type="password" placeholder="Enter your password" required />
-        <input type="password" placeholder="Confirm your password" required />
+
+        <div class="password-wrapper">
+          <input type="password" placeholder="Enter your password" required />
+          <span class="password-toggle" id="togglePassword1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+              <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+              <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+            </svg>
+          </span>
+        </div>
+
+        <div class="password-wrapper">
+          <input type="password" placeholder="Confirm your password" required />
+          <span class="password-toggle" id="togglePassword2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+              <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+              <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+            </svg>
+          </span>
+        </div>
+
         <button type="submit">Sign Up</button>
       </form>
+      <div id="authMessage" class="auth-message"></div>
     </div>
   </section>
-  
 
-    <!-- FOOTER -->
   <footer id="contact" class="site-footer">
     <div class="container footer-inner">
       <small>© <span id="year"></span> Profolio. All rights reserved.</small>
@@ -56,7 +72,5 @@
       </div>
     </div>
   </footer>
-
-  
 </body>
 </html>
