@@ -370,3 +370,36 @@ body.design-mode .section .resize-handle {
   display: block;
 
 }
+/* =========================
+   COLOR PICKER TOOL
+========================= */
+#colorPickerContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  margin-left: 1rem;
+}
+
+#colorPickerContainer.hidden {
+  display: none;
+}
+
+#colorPickerContainer label {
+  color: #333;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+#bgColorPicker {
+  width: 35px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  outline: none;
+  background: none;
+}

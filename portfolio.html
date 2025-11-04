@@ -1,88 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Portfolio – Profolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #f9f9f9;
-      margin: 0;
-      padding: 2rem;
-    }
-    .portfolio-container {
-      max-width: 900px;
-      margin: auto;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-      padding: 2rem;
-    }
-    h1, h2, h3 {
-      color: #4A7387;
-    }
-    .section {
-      margin-bottom: 2rem;
-    }
-    .info {
-      line-height: 1.6;
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Published Portfolio – Profolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="portfolio-clean.css">
+  <link rel="stylesheet" href="portfolio-published.css">
+  <script defer src="portfolio-published.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
 </head>
 <body>
-  <div class="portfolio-container" id="portfolio">
-    <h1 id="name"></h1>
-    <h3 id="headline"></h3>
-    <p id="about"></p>
-
-    <div class="section">
-      <h2>Experience</h2>
-      <p><strong id="jobTitle"></strong> at <span id="company"></span></p>
-      <p id="description"></p>
-    </div>
-
-    <div class="section">
-      <h2>Projects</h2>
-      <p><strong id="projectName"></strong> – <span id="projectRole"></span></p>
-      <p id="projectDesc"></p>
-    </div>
-
-    <div class="section">
-      <h2>Skills</h2>
-      <p id="skills"></p>
-    </div>
-
-    <button onclick="resetPortfolio()" style="background:#4A7387;color:white;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;">Start Over</button>
-  </div>
-
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>
-    const profile = JSON.parse(localStorage.getItem("profile") || "{}");
-    const experience = JSON.parse(localStorage.getItem("experience") || "{}");
-    const projects = JSON.parse(localStorage.getItem("projects") || "{}");
-    const skills = JSON.parse(localStorage.getItem("skills") || "{}");
-    const theme = localStorage.getItem("selectedTheme") || "classic";
-
-    document.getElementById("name").textContent = profile.name || "Your Name";
-    document.getElementById("headline").textContent = profile.headline || "";
-    document.getElementById("about").textContent = profile.about || "";
-
-    document.getElementById("jobTitle").textContent = experience.jobTitle || "";
-    document.getElementById("company").textContent = experience.company || "";
-    document.getElementById("description").textContent = experience.description || "";
-
-    document.getElementById("projectName").textContent = projects.projectName || "";
-    document.getElementById("projectRole").textContent = projects.projectRole || "";
-    document.getElementById("projectDesc").textContent = projects.projectDesc || "";
-
-    document.getElementById("skills").textContent = skills.skills || "";
-
-    // Simple reset button
-    function resetPortfolio() {
-      localStorage.clear();
-      window.location.href = "builder.html";
-    }
+    AOS.init();
   </script>
+
+  <!-- === SVG Loading Screen === -->
+  <div data-aos="zoom-out" id="loadingScreen" class="loading-screen">
+    <svg viewBox="0 0 3387 1270">
+      <path id="planePath" class="planePath" d="M-226 626c439,4 636,-213 934,-225 755,-31 602,769 1334,658 562,-86 668,-698 266,-908 -401,-210 -893,189 -632,630 260,441 747,121 1051,91 360,-36 889,179 889,179" />
+      <g id="plane">
+        <polygon class="fil1" points="-141,-10 199,0 -198,-72 -188,-61 -171,-57 -184,-57 " />
+        <polygon class="fil2" points="199,0 -141,-10 -163,63 -123,9 " />
+        <polygon class="fil3" points="-95,39 -113,32 -123,9 -163,63 -105,53 -108,45 -87,48 -90,45 -103,41 -94,41 " />
+        <path class="fil4" d="M-87 48l-21 -3 3 8 19 -4 -1 -1zm-26 -16l18 7 -2 -1 32 -7 -29 1 11 -4 -24 -1 -16 -18 10 23zm10 9l13 4 -4 -4 -9 0z" />
+        <polygon class="fil1" points="-83,28 -94,32 -65,31 -97,38 -86,49 -67,70 199,0 -123,9 -107,27 " />
+      </g>
+      <animateMotion xlink:href="#plane" dur="5s" repeatCount="indefinite" rotate="auto">
+        <mpath xlink:href="#planePath" />
+      </animateMotion> 
+    </svg>
+
+    <div class="loading-text">
+      Loading<span class="dots"></span>
+    </div>  
+  </div>
+  
+  <!-- === HEADER === -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="images/logo.svg" alt="Profolio Logo" class="logo">
+        <span class="brand-name">Profolio</span>
+      </a>
+      <nav class="nav">
+        <a href="explore.html">Explore Projects</a>
+        <a href="builder.html">Portfolio Builder</a>
+        <a href="index.html">Sign In</a>
+      </nav>
+    </div>
+  </header>
+  
+  <pre>
+
+    
+  </pre>
+  <!-- === PORTFOLIO CONTENT === -->
+  <main class="portfolio-main">
+    <div class="container portfolio-container">
+      <aside class="profile-card" id="profileCard">
+        <div class="avatar">
+          <img id="avatarImg" src="images/profile-placeholder.jpg" alt="Profile" />
+        </div>
+        <h2 id="pfName"></h2>
+        <p class="headline" id="pfHeadline"></p>
+        <p class="location" id="pfLocation"></p>
+
+        <div class="about">
+          <h4>About</h4>
+          <p id="pfAbout"></p>
+        </div>
+
+        <div class="skills">
+          <h4>Skills</h4>
+          <ul id="pfSkillsList"></ul>
+        </div>
+      </aside>
+
+      <section class="portfolio-content" id="portfolioContent">
+        <div class="section" id="projectsSection">
+          <div class="section-header"><h3>Projects</h3></div>
+          <div id="projectsList"></div>
+        </div>
+
+        <div class="section" id="experienceSection">
+          <div class="section-header"><h3>Experience</h3></div>
+          <div id="experienceList"></div>
+        </div>
+
+        <div class="section" id="extraSection">
+          <div class="section-header"><h3>Skills & Certifications</h3></div>
+          <div id="skillsAndCerts"></div>
+        </div>
+
+        <div class="section" id="educationSection">
+          <div class="section-header"><h3>Education</h3></div>
+          <div id="educationList"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- === FOOTER === -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <small>© <span id="year"></span> Profolio. All rights reserved.</small>
+    </div>
+  </footer>
+
 </body>
 </html>

@@ -1,0 +1,86 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #4A7387;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* === Loading Screen === */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: #4A7387;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+.loading-screen.fade-out {
+  opacity: 0;
+}
+
+/* SVG size (original look) */
+.loading-screen svg {
+  width: 70%;
+  max-width: 900px;
+  height: auto;
+}
+
+/* Plane Path */
+.planePath {
+  stroke: #D9DADA;
+  stroke-width: 0.5%;
+  stroke-dasharray: 1% 2%;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.fil1 { fill: #D9DADA; }
+.fil2 { fill: #C5C6C6; }
+.fil3 { fill: #AEAFB0; }
+.fil4 { fill: #9D9E9E; }
+
+/* Loading text below */
+.loading-text {
+  margin-top: 20px;
+  color: #D9DADA;
+  font-size: 1.6rem;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Animated dots */
+.dots::after {
+  content: '';
+  display: inline-block;
+  animation: dots 1.5s steps(3, end) infinite;
+}
+
+@keyframes dots {
+  0% { content: ''; }
+  33% { content: '.'; }
+  66% { content: '..'; }
+  100% { content: '...'; }
+}
+
+/* === Content fade-in (crossfade) === */
+body.loading-active main,
+body.loading-active header,
+body.loading-active footer {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+body.fade-in-content main,
+body.fade-in-content header,
+body.fade-in-content footer {
+  opacity: 1;
+  transition: opacity 1s ease;
+}

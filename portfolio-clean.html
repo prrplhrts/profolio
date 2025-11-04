@@ -23,7 +23,7 @@
       <nav class="nav">
         <a href="explore.html">Explore Projects</a>
         <a href="builder.html">Portfolio Builder</a>
-        <a href="sign-in.html">Sign In</a>
+        <a href="index.html">Sign In</a>
       </nav>
     </div>
   </header>
@@ -35,7 +35,15 @@
     <button id="resetLayoutBtn" class="tool-btn hidden">Reset Layout</button>
     <button id="addCustomSectionBtn" class="tool-btn hidden">+ Add Section</button>
     <button id="saveDesignBtn" class="hidden">Save Design</button>
+    <button id="publishPortfolioBtn" class="tool-btn">Publish Portfolio</button>
 
+
+    <!-- 🎨 Background color picker (hidden unless in edit mode) -->
+    <div id="colorPickerContainer" class="hidden">
+      <label for="bgColorPicker">Background:</label>
+      <input type="color" id="bgColorPicker" value="#f5f5f5">
+    </div>
+  </div>
     
     <div id="designPanel" class="design-panel hidden" aria-hidden="true">
       <label>
