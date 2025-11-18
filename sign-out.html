@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign In – Profolio</title>
+  <title>Sign Out – Profolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="auth.css" />
   <script defer src="auth.js"></script>
 </head>
 <body>
-  <!-- HEADER -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="brand">
@@ -19,36 +18,38 @@
       <nav class="nav">
         <a href="explore.html">Explore Projects</a>
         <a href="builder.html">Portfolio Builder</a>
-        <a href="sign-in.html" class="active">Sign In</a>
+        <a href="sign-in.html">Sign In</a>
       </nav>
     </div>
-
     <div class="header-wave">
-      <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,64 C360,160 1080,0 1440,96 L1440,120 L0,120 Z" fill="#f5f5f5" />
-      </svg>
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,64 C360,160 1080,0 1440,96 L1440,120 L0,120 Z" fill="#f5f5f5" /></svg>
     </div>
   </header>
 
-  <!-- AUTH SECTION -->
   <section class="auth-bg">
-    <div class="auth-box">
-      <h2>Are you sure?</h2>
-      <pre>
-        
-      </pre>
-      <p class="small-text"> <a href="index.html">Log Out</a></p>     
+    <div class="auth-box" style="text-align: center;">
+      <h2>Sign Out?</h2>
+      <p style="color: #666; margin-bottom: 2rem;">Are you sure you want to log out of your account?</p>
+      
+      <button class="btn-confirm-logout" style="
+        background: #c0392b; 
+        color: white; 
+        border: none; 
+        padding: 10px 20px; 
+        border-radius: 6px; 
+        cursor: pointer;
+        font-weight: 600;
+        width: 100%;
+        margin-bottom: 1rem;
+      ">Log Out</button>
 
+      <p class="small-text"><a href="builder.html">Go Back</a></p>    
     </div>
   </section>
 
-  <footer id="contact" class="site-footer">
+  <footer class="site-footer">
     <div class="container footer-inner">
       <small>© <span id="year"></span> Profolio. All rights reserved.</small>
-      <div class="links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-      </div>
     </div>
   </footer>
 </body>

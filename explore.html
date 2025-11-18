@@ -7,10 +7,11 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="explore.css" />
+  
+  <script defer src="explore.js"></script>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="brand">
@@ -21,12 +22,11 @@
       <nav class="nav">
         <a href="explore.html" class="btn btn-explore-projects active">Explore Projects</a>
         <a href="builder.html">Portfolio Builder</a>
-        <a href="sign-in.html" class="btn btn-sign-in">Sign In</a>
+        <a href="sign-in.html" class="btn btn-sign-in" id="authLink">Sign In</a>
       </nav>
     </div>
   </header>
 
-  <!-- HERO -->
   <section class="explore-hero">
     <div class="container explore-hero-inner">
       <h1>Explore <span>Projects</span></h1>
@@ -39,8 +39,8 @@
       </svg>
     </div>
   </section>
+
   <section class="explore-content">
-    <!-- FILTER BAR -->
     <div class="filter-bar container">
       <button class="filter-btn active" data-category="all">All</button>
       <button class="filter-btn" data-category="Web Design">Web Design</button>
@@ -50,9 +50,7 @@
       <button class="filter-btn" data-category="Illustration">Illustration</button>
     </div>
 
-    <!-- PROJECTS GRID -->
     <section class="projects container">
-      <!-- 1 -->
       <div class="project-card" data-category="Web Design">
         <img src="images/projects/project1.png" alt="Project Thumbnail" class="project-thumb" />
         <div class="project-body">
@@ -71,7 +69,6 @@
         </div>
       </div>
       
-      <!-- 2 -->
       <div class="project-card" data-category="UX/UI">
         <img src="images/projects/project2.png" alt="Project Thumbnail" class="project-thumb" />
         <div class="project-body">
@@ -90,7 +87,6 @@
         </div>
       </div>
 
-      <!-- 3 -->
       <div class="project-card" data-category="Branding">
         <img src="images/projects/project3.png" alt="Project Thumbnail" class="project-thumb" />
         <div class="project-body">
@@ -109,7 +105,6 @@
         </div>
       </div>
 
-      <!-- 4 -->
       <div class="project-card" data-category="Frontend">
         <img src="images/projects/project4.png" alt="Project Thumbnail" class="project-thumb" />
         <div class="project-body">
@@ -128,7 +123,6 @@
         </div>
       </div>
 
-      <!-- 5 -->
       <div class="project-card" data-category="Illustration">
         <img src="images/projects/project5.png" alt="Project Thumbnail" class="project-thumb" />
         <div class="project-body">
@@ -147,7 +141,6 @@
         </div>
       </div>
 
-      <!-- 6 -->
       <div class="project-card" data-category="Web Design">
         <img src="images/projects/" alt="Project Thumbnail" class="project-thumb" />
         <div class="project-body">
@@ -167,7 +160,7 @@
       </div>
     </section>
   </section>  
-  <!-- FOOTER -->
+
   <footer id="contact" class="site-footer">
     <div class="container footer-inner">
       <small>© <span id="year"></span> Profolio. All rights reserved.</small>
@@ -177,33 +170,6 @@
       </div>
     </div>
   </footer>
-  
-  <script>
-    // Update footer year
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Filtering logic
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const cards = document.querySelectorAll('.project-card');
-
-    filterButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        // Update active button
-        filterButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const category = btn.getAttribute('data-category');
-
-        cards.forEach(card => {
-          if (category === 'all' || card.dataset.category === category) {
-            card.style.display = 'flex';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      });
-    });
-  </script>
 
 </body>
 </html>

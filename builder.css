@@ -88,6 +88,8 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   padding: 2rem 1.5rem;
   height: fit-content;
+  position: sticky;
+  top: 20px; /* Stick to top when scrolling */
 }
 
 .builder-sidebar h3 {
@@ -107,6 +109,7 @@ body {
   color: #333;
   cursor: pointer;
   transition: background 0.3s;
+  margin-bottom: 0.2rem;
 }
 
 .builder-sidebar li:hover,
@@ -121,6 +124,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   padding: 2.5rem;
+  min-height: 600px; /* Ensure height consistency */
 }
 
 .builder-main h2 {
@@ -152,6 +156,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 200px; /* Ensures inputs don't get too squished */
 }
 
 label {
@@ -160,16 +165,31 @@ label {
   margin-bottom: 0.3rem;
 }
 
-input, textarea {
+input, textarea, select {
   padding: 0.8rem;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
   resize: none;
+  width: 100%;
+  background-color: #fff;
+  font-family: 'Inter', sans-serif;
 }
 
 textarea {
   min-height: 100px;
+}
+
+select {
+  cursor: pointer;
+  appearance: auto;
+}
+
+input[readonly] {
+  background-color: #f2f4f5;
+  color: #666;
+  cursor: not-allowed;
+  border-color: #ddd;
 }
 
 .save-btn {
@@ -177,16 +197,91 @@ textarea {
   color: #fff;
   border: none;
   border-radius: 10px;
-  padding: 1rem ;
+  padding: 1rem;
   font-weight: 600;
   cursor: pointer;
   width: 100%;
   transition: background 0.3s ease;
+  margin-top: 1rem;
 }
 
 .save-btn:hover {
   background: #3a5c6e;
 }
+
+/* =========================
+   PROFILE PICTURE UPLOADER
+========================= */
+.profile-uploader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--blue);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.avatar-wrapper:hover {
+  border-color: #3a5c6e;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+#profilePreviewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.upload-icon-overlay {
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.avatar-wrapper:hover .upload-icon-overlay {
+  opacity: 1;
+}
+
+#profileImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-label-text {
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  color: var(--blue);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.upload-label-text:hover {
+  text-decoration: underline;
+}
+
 /* =========================
    UPLOAD RESUME BOX
 ========================= */
@@ -220,12 +315,6 @@ textarea {
   background: #3a5c6e;
 }
 
-.upload-status {
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 0.5rem;
-}
-
 /* =========================
    FOOTER
 ========================= */
@@ -234,6 +323,7 @@ textarea {
   text-align: center;
   background: #4A7387;
   color: #fff;
+  margin-top: auto;
 }
 
 .footer-inner small {
@@ -253,17 +343,6 @@ textarea {
   opacity: 0.8;
 }
 
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .builder-container {
-    grid-template-columns: 1fr;
-  }
-
-  .builder-sidebar {
-    display: none;
-  }
-}
-
 /* Step Visibility */
 .builder-step {
   display: none;
@@ -279,92 +358,17 @@ textarea {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Preview Box */
 .preview-box {
   background: #fafafa;
   padding: 2rem;
   border-radius: 12px;
   border: 1px solid #ddd;
   color: #333;
+  margin-bottom: 1.5rem;
 }
 
-.preview-card {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.preview-header {
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 1rem;
-}
-
-.preview-header h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--blue);
-}
-
-.preview-header .headline {
-  font-weight: 500;
-  color: #444;
-  margin-top: 0.3rem;
-}
-
-.preview-header .about {
-  margin-top: 0.5rem;
-  color: #666;
-  line-height: 1.5;
-}
-
-.preview-header .contact {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: #777;
-}
-
-.preview-section {
-  border-bottom: 1px solid #e5e5e5;
-  padding-bottom: 1rem;
-}
-
-.preview-section:last-child {
-  border: none;
-}
-
-.preview-section h4 {
-  color: var(--blue);
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.preview-item {
-  margin-left: 1rem;
-  font-size: 0.95rem;
-  color: #444;
-}
-
-.preview-item .duration {
-  font-size: 0.85rem;
-  color: #777;
-}
-
-.preview-item a {
-  color: var(--blue);
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.preview-item a:hover {
-  text-decoration: underline;
-}
-
-.preview-section .empty {
-  font-size: 0.9rem;
-  color: #aaa;
-  margin-left: 1rem;
-}
-
+/* List Items */
 .experience-item,
 .project-item,
 .education-item {
@@ -372,9 +376,6 @@ textarea {
   padding-bottom: 1.5rem;
   margin-bottom: 1.5rem;
   position: relative;
-  background: none;
-  border-radius: 0;
-  box-shadow: none;
 }
 
 .experience-item:last-child,
@@ -393,27 +394,83 @@ textarea {
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  align-self: flex-start;
 }
 
-.remove-btn:hover {
-  background: #a83224;
-}
-
-.preview-avatar {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 1rem;
-  border: 2px solid #ccc;
-}
-.builder-form .form-group {
-  margin-bottom: 1rem;
-}
 .warning {
   font-size: 0.85rem;
   color: #c0392b;
   margin-top: 4px;
   display: block;
+}
+
+/* =========================================
+   RESPONSIVE MEDIA QUERIES
+   ========================================= */
+@media (max-width: 900px) {
+  /* 1. Stack the Grid */
+  .builder-container {
+    grid-template-columns: 1fr; /* Sidebar and Main stack vertically */
+  }
+
+  /* 2. Move Sidebar to Top (Navigation Mode) */
+  .builder-sidebar {
+    position: relative;
+    top: 0;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Make the step list horizontal scrollable for mobile nav */
+  .builder-sidebar ul {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem; /* Space for scrollbar */
+  }
+  
+  .builder-sidebar li {
+    white-space: nowrap; /* Prevent text wrapping */
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* Hide less important sidebar elements on mobile to save space 
+  .upload-resume-box {
+     Optional: Uncomment if you want to hide resume upload on mobile 
+     display: none; */
+  
+
+  /* 3. Adjust Main Area Padding */
+  .builder-main {
+    padding: 1.5rem;
+  }
+
+  /* 4. Adjust Header */
+  .header-inner {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .nav a {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0; /* Stack inputs vertically */
+  }
+  
+  .form-group {
+    margin-bottom: 1rem; /* Add spacing between stacked inputs */
+  }
 }

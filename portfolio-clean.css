@@ -98,10 +98,11 @@ a:focus, button:focus {
   background: #f5f5f5ff;
   padding: 1.5rem;
   display: flex;
-  gap: 15rem;
+  gap: 1.5rem; /* Reduced gap for better wrapping */
   justify-content: center;
   align-items: center;
   position: relative;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
 }
 
 .tool-btn {
@@ -129,6 +130,7 @@ a:focus, button:focus {
   padding: 0.8rem 1rem;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  z-index: 20; /* Ensure it sits above content */
 }
 
 .hidden {
@@ -296,19 +298,6 @@ a:focus, button:focus {
 #resetLayoutBtn:hover {
   background: #d44b4b;
 }
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 920px) {
-  .portfolio-container {
-    grid-template-columns: 1fr;
-  }
-
-  .toolbar {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-}
 
 /* =========================
    DESIGN MODE GRID VISUAL
@@ -368,8 +357,8 @@ body.design-mode .section .resize-handle {
   border-radius: 8px;
   margin-top: 10px;
   display: block;
-
 }
+
 /* =========================
    COLOR PICKER TOOL
 ========================= */
@@ -402,4 +391,50 @@ body.design-mode .section .resize-handle {
   border-radius: 6px;
   outline: none;
   background: none;
+}
+
+/* =========================
+   RESPONSIVE MEDIA QUERIES
+========================= */
+@media (max-width: 920px) {
+  /* Stack the layout vertically */
+  .portfolio-container {
+    grid-template-columns: 1fr;
+  }
+
+  /* Move sidebar to top but maintain reasonable width */
+  .profile-card {
+    max-width: 500px;
+    margin: 0 auto 1.5rem;
+  }
+
+  /* Adjust Toolbar for smaller screens */
+  .toolbar {
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  #colorPickerContainer {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  /* Header adjustments */
+  .header-inner {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .nav a {
+    margin-left: 0;
+  }
 }
