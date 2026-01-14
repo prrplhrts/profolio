@@ -7,9 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="portfolio-clean.css">
   <link rel="stylesheet" href="portfolio-published.css">
-  <script defer src="portfolio-published.js"></script>
+  <script src="portfolio-published.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-
 </head>
 <body>
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -17,8 +16,8 @@
     AOS.init();
   </script>
 
-  <!-- === SVG Loading Screen === -->
-  <div data-aos="zoom-out" id="loadingScreen" class="loading-screen">
+  <!-- === SVG Loading Screen (REMOVED data-aos) === -->
+  <div id="loadingScreen" class="loading-screen">
     <svg viewBox="0 0 3387 1270">
       <path id="planePath" class="planePath" d="M-226 626c439,4 636,-213 934,-225 755,-31 602,769 1334,658 562,-86 668,-698 266,-908 -401,-210 -893,189 -632,630 260,441 747,121 1051,91 360,-36 889,179 889,179" />
       <g id="plane">
@@ -48,15 +47,13 @@
       <nav class="nav">
         <a href="explore.html">Explore Projects</a>
         <a href="builder.html">Portfolio Builder</a>
-        <a href="index.html">Sign In</a>
+        <a href="sign-out.html">Sign Out</a>
       </nav>
     </div>
   </header>
   
-  <pre>
+  <!-- REMOVED THE <PRE> TAG HERE -->
 
-    
-  </pre>
   <!-- === PORTFOLIO CONTENT === -->
   <main class="portfolio-main">
     <div class="container portfolio-container">

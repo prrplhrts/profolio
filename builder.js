@@ -82,68 +82,110 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // --- HELPER: Extract 4-digit Year from any string ---
+  function extractYear(val) {
+    if (!val) return "";
+    // If it's already a clean number, return it
+    if (!isNaN(val) && val.toString().length === 4) return val;
+    
+    // Try to find a 4-digit year in string like "Jan 2020" or "2020-05"
+    const match = String(val).match(/\d{4}/);
+    if (match) return match[0];
+    
+    // If it says "Present" or "Current", we generally default to Current Year in the UI logic
+    // but returning empty string lets the fallback logic take over.
+    return "";
+  }
+
   function autofillBuilder(data) {
-    // Profile
+    // 1. Profile
     if (data.profile) {
       if (data.profile.name) document.getElementById("name").value = data.profile.name;
       if (data.profile.headline) document.getElementById("headline").value = data.profile.headline;
       if (data.profile.email) document.getElementById("email").value = data.profile.email;
       if (data.profile.about) document.getElementById("about").value = data.profile.about;
       
-      // --- IMPROVED COUNTRY/CITY LOGIC ---
+      // --- ROBUST LOCATION SPLITTING ---
       if (data.profile.location) {
-         const rawLoc = data.profile.location;
-         const parts = rawLoc.split(',').map(s => s.trim());
-         
-         let potentialCity = "";
-         let potentialCountry = "";
+         let fullLoc = data.profile.location.trim();
+         let finalCity = fullLoc;
+         let matchedIndex = -1;
 
-         // Basic heuristic: Last part is country, rest is city
-         if (parts.length > 1) {
-             potentialCountry = parts[parts.length - 1];
-             potentialCity = parts.slice(0, parts.length - 1).join(', ');
-         } else {
-             potentialCountry = rawLoc; // Try to see if the whole string is a country
-             potentialCity = rawLoc;    // Default fallback
-         }
-
-         // Try to match Country in the Dropdown
          const countrySelect = document.getElementById("country");
-         let countryMatched = false;
+         const countryOptions = Array.from(countrySelect.options)
+             .map((opt, index) => ({ val: opt.value, index: index }))
+             .filter(opt => opt.val !== "")
+             .sort((a, b) => b.val.length - a.val.length);
 
-         for(let i=0; i<countrySelect.options.length; i++) {
-             const opt = countrySelect.options[i].value.toLowerCase();
-             const target = potentialCountry.toLowerCase();
+         const abbrevMap = {
+             "USA": "United States", "US": "United States", "U.S.A.": "United States",
+             "UK": "United Kingdom", "U.K.": "United Kingdom", "UAE": "United Arab Emirates"
+         };
 
-             // Check exact match OR if the target contains the option (e.g. "United States of America" vs "United States")
-             if (opt === target || (target.length > 3 && (opt.includes(target) || target.includes(opt)))) {
-                 countrySelect.selectedIndex = i;
-                 countryMatched = true;
+         for (const [abbr, fullName] of Object.entries(abbrevMap)) {
+             const regex = new RegExp(`(?:\\s+|^)${abbr}$`, 'i');
+             if (regex.test(fullLoc)) {
+                 const match = countryOptions.find(o => o.val.toLowerCase() === fullName.toLowerCase());
+                 if (match) {
+                     matchedIndex = match.index;
+                     finalCity = fullLoc.replace(regex, '').trim();
+                 }
                  break;
              }
          }
 
-         // Set City
-         if (countryMatched) {
-             document.getElementById("city").value = potentialCity;
+         if (matchedIndex === -1) {
+             const lowerLoc = fullLoc.toLowerCase();
+             for (const opt of countryOptions) {
+                 const countryLower = opt.val.toLowerCase();
+                 if (lowerLoc.endsWith(countryLower)) {
+                     matchedIndex = opt.index;
+                     finalCity = fullLoc.substring(0, fullLoc.length - countryLower.length).trim();
+                     break;
+                 }
+             }
+         }
+
+         if (matchedIndex !== -1) {
+             countrySelect.selectedIndex = matchedIndex;
+             finalCity = finalCity.replace(/[,-\s]+$/, ''); 
+             document.getElementById("city").value = finalCity;
          } else {
-             // If we couldn't find the country in the dropdown, put the FULL string in City
-             // so the user doesn't lose the info.
-             document.getElementById("city").value = rawLoc;
+             document.getElementById("city").value = fullLoc;
          }
       }
     }
 
-    // Lists
+    // 2. FIXED: Lists (Ensure Array & Clean Years)
+    const ensureArray = (item) => Array.isArray(item) ? item : (item ? [item] : []);
+
     document.getElementById("experienceList").innerHTML = "";
     document.getElementById("projectList").innerHTML = "";
     document.getElementById("educationList").innerHTML = "";
 
-    if (data.experience?.length) data.experience.forEach(addExperience);
-    if (data.projects?.length) data.projects.forEach(addProject);
-    if (data.education?.length) data.education.forEach(addEducation);
+    // Experience
+    const expArray = ensureArray(data.experience);
+    expArray.forEach(item => {
+        // Clean years before adding
+        item.startDate = extractYear(item.startDate);
+        item.endDate = extractYear(item.endDate);
+        addExperience(item);
+    });
+
+    // Projects (Projects usually don't have dates in this simplified model, but if they did...)
+    const projArray = ensureArray(data.projects);
+    projArray.forEach(addProject);
+
+    // Education
+    const eduArray = ensureArray(data.education);
+    eduArray.forEach(item => {
+        // Clean years before adding
+        item.eduStart = extractYear(item.eduStart);
+        item.eduEnd = extractYear(item.eduEnd);
+        addEducation(item);
+    });
     
-    // Skills
+    // 3. Skills
     if (data.skills) {
       if(data.skills.skills) document.getElementById("skillsInput").value = data.skills.skills;
       if(data.skills.certifications) document.getElementById("certifications").value = data.skills.certifications;
@@ -225,6 +267,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function addExperience(prefill = {}) {
     const div = document.createElement("div");
     div.classList.add("experience-item");
+    // Fallback to current year only if prefill is explicitly empty AND user hasn't edited
+    // But for autofill, if cleanYear returns "", we rely on the default behavior:
+    // If prefill.startDate is "", input value becomes current year (via || new Date().getFullYear())
+    // This is generally desired behavior for "Present" end dates.
+    
     div.innerHTML = `
       <div class="form-group"><label>Job Title</label><input type="text" class="jobTitle" value="${prefill.jobTitle || ""}"></div>
       <div class="form-group"><label>Company</label><input type="text" class="company" value="${prefill.company || ""}"></div>
@@ -430,11 +477,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
+            
+            const json = await res.json();
+
             if (res.ok) {
                 alert("✅ Saved! Generating your portfolio...");
-                window.location.href = "portfolio-theme.html";
+                
+                // Clear old custom layouts
+                localStorage.removeItem("profolio_simple_layout_v9");
+                localStorage.removeItem("profolio_custom_sections_v9");
+                localStorage.removeItem("portfolioBgColor");
+
+                // DIRECT REDIRECT to portfolio-clean.html
+                if (json.slug) {
+                    window.location.href = `portfolio-clean.html?id=${json.slug}`;
+                } else {
+                    window.location.href = "portfolio-clean.html"; 
+                }
             } else {
-                const json = await res.json();
                 alert(`❌ Save Failed: ${json.error || "Unknown"}`);
                 generateBtn.textContent = originalText;
                 generateBtn.disabled = false;
@@ -527,6 +587,22 @@ document.addEventListener("DOMContentLoaded", () => {
     else locationString = profile.country || profile.city || "";
     if (profile.timezone) locationString += ` (${profile.timezone})`;
 
+    // --- REPLICATED PREVIEW LOGIC FOR SKILLS/CERTS ---
+    let skillsSectionHtml = '';
+    const hasSkills = skills.skills && skills.skills.trim().length > 0;
+    const hasCerts = skills.certifications && skills.certifications.trim().length > 0;
+
+    if (hasSkills || hasCerts) {
+        skillsSectionHtml += '<div class="preview-section" id="skillsSection">';
+        if (hasSkills) {
+            skillsSectionHtml += `<h4>Skills</h4><p>${skills.skills}</p>`;
+        }
+        if (hasCerts) {
+            skillsSectionHtml += `<h4>Certifications</h4><p style="white-space: pre-line;">${skills.certifications}</p>`;
+        }
+        skillsSectionHtml += '</div>';
+    }
+
     previewBox.innerHTML = `
       <div class="preview-card">
         <div class="preview-header">
@@ -539,9 +615,47 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="preview-section"><h4>Experience</h4>${experience.map(e => `<p><strong>${e.jobTitle}</strong> – ${e.company}</p><p>${e.description}</p>`).join("")}</div>
         <div class="preview-section"><h4>Projects</h4>${projects.map(p => `<p><strong>${p.projectName}</strong> – ${p.projectRole}</p><p>${p.projectDesc}</p>`).join("")}</div>
         <div class="preview-section"><h4>Education</h4>${education.map(ed => `<p><strong>${ed.degree}</strong> – ${ed.school}</p>`).join("")}</div>
-        <div class="preview-section"><h4>Skills</h4><p>${skills.skills || ""}</p></div>
+        ${skillsSectionHtml}
       </div>
     `;
+  }
+
+  /* --- RESET BUTTON LOGIC --- */
+  const resetAllBtn = document.getElementById("resetAllBtn");
+  if (resetAllBtn) {
+    resetAllBtn.addEventListener("click", () => {
+      // Confirmation
+      if (confirm("⚠️ Are you sure you want to reset EVERYTHING?\n\nThis will clear your profile, experience, projects, and skills. This cannot be undone.")) {
+        
+        // 1. Clear LocalStorage
+        const keysToRemove = ['profile', 'experience', 'projects', 'education', 'skills', 'profileImage'];
+        keysToRemove.forEach(key => localStorage.removeItem(key));
+
+        // 2. Clear Form Inputs
+        document.querySelectorAll("input[type='text'], input[type='email'], input[type='number'], textarea").forEach(input => input.value = "");
+        document.querySelectorAll("select").forEach(select => select.selectedIndex = 0);
+
+        // 3. Reset Profile Image
+        const defaultSVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ccc'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E`;
+        const imgPreview = document.getElementById("profilePreviewImg");
+        if (imgPreview) imgPreview.src = defaultSVG;
+
+        // 4. Clear Dynamic Lists
+        document.getElementById("experienceList").innerHTML = "";
+        document.getElementById("projectList").innerHTML = "";
+        document.getElementById("educationList").innerHTML = "";
+        
+        // 5. Re-add empty fields
+        addExperience();
+        addProject();
+        addEducation();
+
+        // 6. Update Preview
+        if (typeof displayPreview === "function") displayPreview();
+        
+        alert("✅ All data has been reset.");
+      }
+    });
   }
 
   initProfileHelpers();

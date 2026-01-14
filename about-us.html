@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us – Profolio</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" /> <!-- Base Styles -->
+  <link rel="stylesheet" href="about-us.css" />  <!-- About Page Styles -->
+  
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="images/logo.svg" alt="Profolio Logo" class="logo">
+        <span class="brand-name">Profolio</span>
+      </a>
+
+      <nav class="nav">
+        <a href="explore.html">Explore Projects</a>
+        <a href="builder.html">Portfolio Builder</a>
+        <a href="sign-in.html" class="btn btn-sign-in">Sign In</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO / GROUP PHOTO SECTION -->
+  <section class="about-hero">
+    <div class="container">
+      <h1 class="hero-title" data-aos="fade-up">Meet the <span>Team</span></h1>
+      <p class="hero-desc" data-aos="fade-up" data-aos-delay="100">
+        The minds behind Profolio. We are a team of passionate developers dedicated to making portfolio creation accessible to everyone.
+      </p>
+      
+      <!-- Group Image -->
+      <div class="group-photo-wrapper" data-aos="zoom-in" data-aos-delay="200">
+        <img src="images/group-photo.png" alt="Profolio Team Group Photo" class="group-photo" >
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM GRID SECTION -->
+  <section class="team-section">
+    <div class="container">
+      <h2 class="section-title">Our Developers</h2>
+      
+      <div class="team-grid">
+
+        <!-- 1. Project Manager / Leader -->
+        <div class="team-card" data-aos="fade-up">
+          <div class="member-img">
+            <img src="images/jore.jpg" alt="Joimarie Charlisse Reyes" >
+          </div>
+          <div class="member-info">
+            <h3>Joimarie Charlisse Reyes</h3>
+            <span class="role role-lead">Project Manager / QA</span>
+            
+          </div>
+        </div>
+
+        <!-- 2. Lead Developer -->
+        <div class="team-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="member-img">
+            <img src="images/seth.png" alt="Seth Tomas Gabriel Mata" >
+          </div>
+          <div class="member-info">
+            <h3>Seth Tomas Gabriel Mata</h3>
+            <span class="role role-dev">Lead Developer</span>
+            
+          </div>
+        </div>
+
+        <!-- 3. Database Developer -->
+        <div class="team-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="member-img">
+            <img src="images/jr.jpg" alt="JR Buhisan" >
+          </div>
+          <div class="member-info">
+            <h3>JR Buhisan</h3>
+            <span class="role role-db">Database Developer</span>
+  
+          </div>
+        </div>
+
+        <!-- 4. Frontend Developer -->
+        <div class="team-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="member-img">
+            <img src="images/ash.jpg" alt="Ashley Jesuryn Requillas" >
+          </div>
+          <div class="member-info">
+            <h3>Ashley Jesuryn Requillas</h3>
+            <span class="role role-front">Frontend Developer</span>
+            
+          </div>
+        </div>
+
+        <!-- 5. Frontend Developer -->
+        <div class="team-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="member-img">
+            <img src="images/thea.jpg" alt="Althea Victoria Santos" >
+          </div>
+          <div class="member-info">
+            <h3>Althea Victoria Santos</h3>
+            <span class="role role-front">Frontend Developer</span>
+            
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="site-footer">
+    <div class="container footer-inner">
+      <small>© <span id="year"></span> Profolio. All rights reserved.</small>
+      <div class="links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

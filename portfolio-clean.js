@@ -1,4 +1,3 @@
-// portfolio-clean.js — 
 document.addEventListener("DOMContentLoaded", () => {
   const LAYOUT_KEY = "profolio_simple_layout_v9";
   const CUSTOM_SECTIONS_KEY = "profolio_custom_sections_v9";
@@ -13,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const toolbar = document.querySelector(".toolbar");
 
   if (!portfolioContent || !editDesignBtn || !toolbar) {
-    console.warn("portfolio-clean.js: required DOM elements missing (portfolioContent / editDesignBtn / toolbar).");
+    console.warn("portfolio-clean.js: required DOM elements missing.");
     return;
   }
 
@@ -25,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const defaultLayout = {};
 
   /* ----------------------------
-     Utility / Layout helpers
+      Utility / Layout helpers
   ---------------------------- */
   function captureDefaultLayout() {
     sections().forEach(sec => {
@@ -46,7 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
     sections().forEach(sec => {
       const pos = layout[sec.id];
       if (!pos) {
-        // reset to static flow if no saved layout
         sec.style.position = "";
         sec.style.left = "";
         sec.style.top = "";
@@ -62,9 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sec.style.width = pos.width + "px";
       sec.style.height = pos.height + "px";
     });
-    // If no positions saved, leave flow layout
     adjustFooterPosition();
-    
   }
 
   function saveLayout() {
@@ -76,21 +72,17 @@ document.addEventListener("DOMContentLoaded", () => {
     layout = { ...defaultLayout };
     saveLayout();
 
-    // Remove all custom sections
     customSections = [];
     localStorage.removeItem(CUSTOM_SECTIONS_KEY);
     document.querySelectorAll(".custom-section").forEach(sec => sec.remove());
 
-    // --- RESET BACKGROUND COLOR ---
-    const DEFAULT_BG_COLOR = "#f5f5f5"; // ← change this if your original background was different
+    const DEFAULT_BG_COLOR = "#f5f5f5"; 
     document.body.style.backgroundColor = DEFAULT_BG_COLOR;
     localStorage.setItem(BG_COLOR_KEY, DEFAULT_BG_COLOR);
 
-    // If toolbar color should match body, reset that too
     const toolbar = document.querySelector(".toolbar");
     if (toolbar) toolbar.style.backgroundColor = DEFAULT_BG_COLOR;
 
-    // Also update the color picker UI if present
     const bgColorPicker = document.getElementById("bgColorPicker");
     if (bgColorPicker) bgColorPicker.value = DEFAULT_BG_COLOR;
 
@@ -99,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function adjustFooterPosition() {
-    // Ensure portfolioContent is sized to hold absolutely positioned sections
     const visibleSections = sections().filter(sec => !sec.classList.contains("hidden"));
     if (!visibleSections.length) {
       portfolioContent.style.height = "";
@@ -120,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ----------------------------
-     Load Data from Builder
+      Load Data from Builder
   ---------------------------- */
   const profile = JSON.parse(localStorage.getItem("profile") || "{}");
   const projects = JSON.parse(localStorage.getItem("projects") || "[]");
@@ -128,19 +119,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const education = JSON.parse(localStorage.getItem("education") || "[]");
   const skills = JSON.parse(localStorage.getItem("skills") || "{}");
 
-  // Avatar
   const avatarImg = document.getElementById("avatarImg");
   const storedImg = localStorage.getItem("profileImage");
   if (storedImg && avatarImg) avatarImg.src = storedImg;
-  
 
-  // PROFILE fields
   if (document.getElementById("pfName")) document.getElementById("pfName").textContent = profile.name || "";
   if (document.getElementById("pfHeadline")) document.getElementById("pfHeadline").textContent = profile.headline || "";
   if (document.getElementById("pfLocation")) document.getElementById("pfLocation").textContent = profile.location || "";
   if (document.getElementById("pfAbout")) document.getElementById("pfAbout").textContent = profile.about || "";
 
-  // Skills list
   const pfSkillsList = document.getElementById("pfSkillsList");
   if (pfSkillsList) {
     if (skills.skills) {
@@ -154,7 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else pfSkillsList.innerHTML = "";
   }
 
-  // Hide profile card if empty
   const profileCard = document.getElementById("profileCard");
   const hasProfileData =
     (profile.name && profile.name.trim()) ||
@@ -254,19 +240,20 @@ document.addEventListener("DOMContentLoaded", () => {
     } else extraSection.classList.add("hidden");
   }
 
-  // Year
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   /* ----------------------------
-     Custom Sections (DOM + persistence)
+      Custom Sections (DOM + Persistence)
   ---------------------------- */
   function saveCustomSections() {
     customSections = Array.from(document.querySelectorAll(".custom-section")).map(sec => ({
       id: sec.id,
       title: sec.querySelector("h3")?.textContent ?? "",
       content: sec.querySelector(".custom-content")?.textContent ?? "",
-      image: sec.querySelector(".custom-img")?.src || null
+      image: sec.querySelector(".custom-img")?.src || null,
+      // Save width, default to 100% if not found
+      imageWidth: sec.querySelector(".custom-img")?.style.width || "100%"
     }));
     localStorage.setItem(CUSTOM_SECTIONS_KEY, JSON.stringify(customSections));
   }
@@ -275,31 +262,52 @@ document.addEventListener("DOMContentLoaded", () => {
     const div = document.createElement("div");
     div.className = "section custom-section";
     div.id = sectionData.id || `custom-${Date.now()}`;
+    
+    // Default image width is 100%, parse integer for slider value
+    const currentWidthVal = parseInt(sectionData.imageWidth) || 100;
+
     div.innerHTML = `
       <div class="section-header">
         <h3 contenteditable="false">${sectionData.title || "New Section"}</h3>
       </div>
       <div class="custom-content-area">
         <p contenteditable="false" class="custom-content">${sectionData.content || "Write something..."}</p>
-        ${sectionData.image ? `<img src="${sectionData.image}" class="custom-img" alt="Section Image">` : ""}
+        ${
+          sectionData.image 
+          ? `<img src="${sectionData.image}" class="custom-img" alt="Section Image" style="width: ${currentWidthVal}%; max-width: 100%;">` 
+          : ""
+        }
       </div>
-      <input type="file" accept="image/*" class="image-upload hidden">
-      <button class="add-image hidden">Add Image</button>
-      <button class="remove-custom hidden">Remove Section</button>
+      
+      <!-- CONTROLS CONTAINER -->
+      <div class="controls-area hidden">
+        <input type="file" accept="image/*" class="image-upload hidden">
+        <div style="display: flex; gap: 10px; align-items: center; margin-top: 10px;">
+            <button class="add-image" style="background:#4A7387; color:#fff; border:none; border-radius:6px; padding:6px 12px; cursor:pointer;">Add/Replace Image</button>
+            <button class="remove-custom" style="background:#ff4d4d; color:#fff; border:none; border-radius:6px; padding:6px 12px; cursor:pointer;">Remove Section</button>
+        </div>
+        
+        <!-- IMAGE SIZE SLIDER -->
+        <div class="img-size-container ${sectionData.image ? '' : 'hidden'}" style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
+            <label style="font-size: 0.85rem; color: #333; font-weight: 500;">Image Size:</label>
+            <input type="range" class="img-size-slider" min="10" max="100" value="${currentWidthVal}" style="cursor: pointer;">
+        </div>
+      </div>
+      
       <div class="resize-handle" style="display:none;"></div>
     `;
     portfolioContent.appendChild(div);
 
-    // style/remove btn references (keeps look consistent)
+    // --- References ---
+    const controlsArea = div.querySelector(".controls-area");
     const removeBtn = div.querySelector(".remove-custom");
+    const addImgBtn = div.querySelector(".add-image");
+    const imgInput = div.querySelector(".image-upload");
+    const sizeSlider = div.querySelector(".img-size-slider");
+    const sizeContainer = div.querySelector(".img-size-container");
+
+    // --- REMOVE SECTION ---
     if (removeBtn) {
-      removeBtn.style.background = "#ff4d4d";
-      removeBtn.style.color = "#fff";
-      removeBtn.style.border = "none";
-      removeBtn.style.borderRadius = "6px";
-      removeBtn.style.padding = "6px 12px";
-      removeBtn.style.marginTop = "10px";
-      removeBtn.style.cursor = "pointer";
       removeBtn.addEventListener("click", () => {
         div.remove();
         saveCustomSections();
@@ -307,18 +315,11 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    const addImgBtn = div.querySelector(".add-image");
-    const imgInput = div.querySelector(".image-upload");
+    // --- ADD / REPLACE IMAGE ---
     if (addImgBtn) {
-      addImgBtn.style.background = "#4A7387";
-      addImgBtn.style.color = "#fff";
-      addImgBtn.style.border = "none";
-      addImgBtn.style.borderRadius = "6px";
-      addImgBtn.style.padding = "6px 12px";
-      addImgBtn.style.marginTop = "10px";
-      addImgBtn.style.cursor = "pointer";
       addImgBtn.addEventListener("click", () => imgInput.click());
     }
+
     if (imgInput) {
       imgInput.addEventListener("change", (e) => {
         const file = e.target.files[0];
@@ -329,26 +330,46 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!img) {
             img = document.createElement("img");
             img.className = "custom-img";
-            img.style.maxWidth = "100%";
             img.style.borderRadius = "8px";
             img.style.marginTop = "10px";
+            img.style.maxWidth = "100%"; // Enforce section boundary
+            img.style.width = "100%"; // Default new image to 100%
             div.querySelector(".custom-content-area").appendChild(img);
           }
           img.src = ev.target.result;
+          
+          // Show Slider & Reset it to 100
+          if(sizeContainer) {
+              sizeContainer.classList.remove("hidden");
+              sizeSlider.value = 100;
+          }
           saveCustomSections();
         };
         reader.readAsDataURL(file);
       });
     }
 
+    // --- SIZE SLIDER LOGIC ---
+    if (sizeSlider) {
+        sizeSlider.addEventListener("input", (e) => {
+            const img = div.querySelector(".custom-img");
+            if (img) {
+                img.style.width = e.target.value + "%";
+                // Max-width is already set in HTML creation to enforce boundary
+            }
+        });
+        // Save on change (mouse up) to avoid spamming save during slide
+        sizeSlider.addEventListener("change", () => saveCustomSections());
+    }
+
     makeDraggableResizable(div);
     applyLayout();
     adjustFooterPosition();
 
+    // If currently in edit mode, make controls visible
     if (editMode) {
       div.querySelectorAll("[contenteditable]").forEach(el => (el.contentEditable = "true"));
-      removeBtn?.classList.remove("hidden");
-      addImgBtn?.classList.remove("hidden");
+      controlsArea.classList.remove("hidden");
       div.querySelector(".resize-handle").style.display = "block";
     }
 
@@ -356,7 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ----------------------------
-     Edit Mode enter/exit
+      Edit Mode enter/exit
   ---------------------------- */
   function enterEditMode() {
     editMode = true;
@@ -364,7 +385,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("design-mode");
     resetBtn?.classList.remove("hidden");
     addCustomBtn?.classList.remove("hidden");
-    // show color picker UI when entering edit mode
     showColorPicker(true);
 
     sections().forEach(sec => {
@@ -382,8 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
       handle.style.display = "block";
 
       if (sec.classList.contains("custom-section")) {
-        sec.querySelector(".remove-custom")?.classList.remove("hidden");
-        sec.querySelector(".add-image")?.classList.remove("hidden");
+        sec.querySelector(".controls-area")?.classList.remove("hidden");
         sec.querySelectorAll("[contenteditable]").forEach(el => (el.contentEditable = "true"));
       }
 
@@ -398,7 +417,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.remove("design-mode");
     resetBtn?.classList.add("hidden");
     addCustomBtn?.classList.add("hidden");
-    // hide color picker when leaving edit mode
     showColorPicker(false);
 
     sections().forEach(sec => {
@@ -409,8 +427,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const handle = sec.querySelector(".resize-handle");
       if (handle) handle.style.display = "none";
       if (sec.classList.contains("custom-section")) {
-        sec.querySelector(".remove-custom")?.classList.add("hidden");
-        sec.querySelector(".add-image")?.classList.add("hidden");
+        sec.querySelector(".controls-area")?.classList.add("hidden");
         sec.querySelectorAll("[contenteditable]").forEach(el => (el.contentEditable = "false"));
       }
     });
@@ -422,8 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ----------------------------
-     Drag + Resize (mouse)
-     Simple mousedown-move-mouseup implementation
+      Draggable Logic
   ---------------------------- */
   function makeDraggableResizable(el) {
     if (!el) return;
@@ -432,9 +448,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     el.addEventListener("mousedown", (e) => {
       if (!editMode) return;
-      // Ignore clicks on interactive children (buttons, inputs)
-      const interactive = ["BUTTON", "A", "INPUT", "TEXTAREA", "SELECT", "IMG", "LABEL"];
+      // Ignore clicks on controls
+      const interactive = ["BUTTON", "A", "INPUT", "TEXTAREA", "SELECT", "LABEL"];
       if (interactive.includes(e.target.tagName) && !e.target.classList.contains("resize-handle")) return;
+      // Allow dragging by clicking image, but not interacting with slider
+      if (e.target.classList.contains("img-size-slider")) return;
 
       const isHandle = e.target.classList.contains("resize-handle");
       resizing = isHandle;
@@ -483,20 +501,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ----------------------------
-     Buttons wiring
+      Buttons & Color Picker
   ---------------------------- */
   addCustomBtn.addEventListener("click", () => {
     const newSection = {
       id: `custom-${Date.now()}`,
       title: "New Section",
-      content: "Write something..."
+      content: "Write something...",
+      imageWidth: "100%"
     };
     customSections.push(newSection);
     localStorage.setItem(CUSTOM_SECTIONS_KEY, JSON.stringify(customSections));
     addCustomSectionToDOM(newSection, true);
   });
 
-  // Edit Design toggle: keep text syncing and ensure color picker shows only in edit mode
   editDesignBtn.addEventListener("click", () => {
     if (!editMode) {
       enterEditMode();
@@ -517,126 +535,91 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("resize", () => { if (!editMode) applyLayout(); });
 
-/* ----------------------------
-   BACKGROUND COLOR PICKER (created dynamically)
-   — Only visible in edit mode
----------------------------- */
-const DEFAULT_BG_COLOR = "#f5f5f5";
-let colorPickerContainer, bgColorPicker;
+  // Background Color Logic
+  const DEFAULT_BG_COLOR = "#f5f5f5";
+  let colorPickerContainer, bgColorPicker;
 
-function createColorPickerDOM() {
-  if (!toolbar) return;
-  if (colorPickerContainer) return; // already exists
+  function createColorPickerDOM() {
+    if (!toolbar) return;
+    if (colorPickerContainer) return;
 
-  colorPickerContainer = document.createElement("div");
-  colorPickerContainer.id = "colorPickerContainer";
-  colorPickerContainer.style.display = "none"; // hidden by default
-  colorPickerContainer.style.alignItems = "center";
-  colorPickerContainer.style.gap = "8px";
-  colorPickerContainer.style.marginLeft = "12px";
+    colorPickerContainer = document.createElement("div");
+    colorPickerContainer.id = "colorPickerContainer";
+    colorPickerContainer.style.display = "none";
+    colorPickerContainer.style.alignItems = "center";
+    colorPickerContainer.style.gap = "8px";
+    colorPickerContainer.style.marginLeft = "12px";
 
-  const label = document.createElement("label");
-  label.textContent = "Background:";
-  label.style.fontSize = "0.95rem";
-  label.style.color = "#333";
+    const label = document.createElement("label");
+    label.textContent = "Background:";
+    label.style.fontSize = "0.95rem";
+    label.style.color = "#333";
 
-  bgColorPicker = document.createElement("input");
-  bgColorPicker.type = "color";
-  bgColorPicker.id = "bgColorPicker";
-  bgColorPicker.title = "Pick background color";
+    bgColorPicker = document.createElement("input");
+    bgColorPicker.type = "color";
+    bgColorPicker.id = "bgColorPicker";
+    bgColorPicker.title = "Pick background color";
 
-  colorPickerContainer.appendChild(label);
-  colorPickerContainer.appendChild(bgColorPicker);
-  toolbar.appendChild(colorPickerContainer);
+    colorPickerContainer.appendChild(label);
+    colorPickerContainer.appendChild(bgColorPicker);
+    toolbar.appendChild(colorPickerContainer);
 
-  // Attach color change listener
-  bgColorPicker.addEventListener("input", (e) => {
-    const color = e.target.value;
-    document.body.style.backgroundColor = color;
-    toolbar.style.backgroundColor = color;
-    localStorage.setItem(BG_COLOR_KEY, color);
-  });
-}
-
-// Create color picker immediately (but hidden)
-createColorPickerDOM();
-
-// Load saved color and apply immediately
-const savedColor = localStorage.getItem(BG_COLOR_KEY) || DEFAULT_BG_COLOR;
-document.body.style.backgroundColor = savedColor;
-toolbar.style.backgroundColor = savedColor;
-if (bgColorPicker) bgColorPicker.value = savedColor;
-
-// Show/hide when entering edit mode
-function showColorPicker(show) {
-  if (!colorPickerContainer) createColorPickerDOM();
-  if (!colorPickerContainer) return;
-
-  colorPickerContainer.style.display = show ? "inline-flex" : "none";
-
-  // Always refresh picker value when showing
-  if (show && bgColorPicker) {
-    const currentColor =
-      localStorage.getItem(BG_COLOR_KEY) ||
-      getComputedStyle(document.body).backgroundColor;
-    bgColorPicker.value = rgbToHex(currentColor);
+    bgColorPicker.addEventListener("input", (e) => {
+      const color = e.target.value;
+      document.body.style.backgroundColor = color;
+      toolbar.style.backgroundColor = color;
+      localStorage.setItem(BG_COLOR_KEY, color);
+    });
   }
-}
 
-// Utility: convert rgb() to hex
-function rgbToHex(rgbStr) {
-  if (!rgbStr) return "#ffffff";
-  const rgb = rgbStr.match(/\d+/g);
-  if (!rgb) return "#ffffff";
-  return (
-    "#" +
-    rgb
-      .slice(0, 3)
-      .map((x) => ("0" + parseInt(x).toString(16)).slice(-2))
-      .join("")
-  );
-}
+  createColorPickerDOM();
 
-  // --- PUBLISH PORTFOLIO BUTTON ---
+  const savedColor = localStorage.getItem(BG_COLOR_KEY) || DEFAULT_BG_COLOR;
+  document.body.style.backgroundColor = savedColor;
+  toolbar.style.backgroundColor = savedColor;
+  if (bgColorPicker) bgColorPicker.value = savedColor;
+
+  function showColorPicker(show) {
+    if (!colorPickerContainer) createColorPickerDOM();
+    if (!colorPickerContainer) return;
+    colorPickerContainer.style.display = show ? "inline-flex" : "none";
+    if (show && bgColorPicker) {
+      const currentColor = localStorage.getItem(BG_COLOR_KEY) || getComputedStyle(document.body).backgroundColor;
+      bgColorPicker.value = rgbToHex(currentColor);
+    }
+  }
+
+  function rgbToHex(rgbStr) {
+    if (!rgbStr) return "#ffffff";
+    const rgb = rgbStr.match(/\d+/g);
+    if (!rgb) return "#ffffff";
+    return "#" + rgb.slice(0, 3).map((x) => ("0" + parseInt(x).toString(16)).slice(-2)).join("");
+  }
+
   const publishBtn = document.getElementById("publishPortfolioBtn");
   if (publishBtn) {
     publishBtn.addEventListener("click", () => {
-      // Save all current edits to localStorage
       saveCustomSections();
       saveLayout();
-
       const bgColor = getComputedStyle(document.body).backgroundColor;
       localStorage.setItem(BG_COLOR_KEY, bgColor);
-
-      // Redirect immediately to portfolio.html (loading screen will show there)
       window.location.href = "portfolio.html";
     });
   }
-  // hide publish button in edit mode
+
   function updatePublishButtonVisibility() {
     if (!publishBtn) return;
     publishBtn.classList.toggle("hidden", editMode);
   }
-  /* ----------------------------
-     Load layout + custom sections on page start
-  ---------------------------- */
+
   window.addEventListener("load", () => {
-    // If no layout saved, capture defaults for resetting later
     captureDefaultLayout();
-
-    // If layout exists, keep it loaded
     applyLayout();
-
-    // Render any saved custom sections
     customSections.forEach(addCustomSectionToDOM);
-
-    // Ensure color picker reflects saved color
     if (bgColorPicker && localStorage.getItem(BG_COLOR_KEY)) {
       bgColorPicker.value = localStorage.getItem(BG_COLOR_KEY);
       document.body.style.backgroundColor = localStorage.getItem(BG_COLOR_KEY);
     }
-
-    // ensure proper footer placement
     adjustFooterPosition();
   });
 });

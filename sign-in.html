@@ -6,7 +6,11 @@
   <title>Sign In – Profolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="auth.css" />
-  <script defer src="auth.js"></script>
+  
+  <!-- GOOGLE SIGN IN SCRIPT -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  
+  <script src="auth.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -31,14 +35,43 @@
       <h2>Sign In</h2>
       <p class="small-text">New user? <a href="sign-up.html">Create an account →</a></p>
 
+      <!-- GOOGLE SIGN IN BUTTONS -->
+      <!-- Replace 'data-client_id' with your actual Google Client ID -->
+      <div id="g_id_onload"
+         data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+      </div>
+      
+      <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left"
+         data-width="100%">
+      </div>
+      
+      <!-- OR DIVIDER -->
+      <div style="margin: 20px 0; position: relative; text-align: center;">
+        <hr style="border: 0; border-top: 1px solid #eee;">
+        <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #fff; padding: 0 10px; color: #888; font-size: 0.8rem;">OR</span>
+      </div>
+
       <form class="auth-form">
-        <input type="email" placeholder="Enter your email" required />
+        <input type="email" id="email" placeholder="Enter your email" required />
 
         <div class="password-wrapper">
-          <input type="password" placeholder="Enter your password" required />
+          <input type="password" id="password" placeholder="Enter your password" required />
           <span class="password-toggle" id="togglePassword">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/></svg>
           </span>
+        </div>
+
+        <!-- FORGOT PASSWORD LINK -->
+        <div style="text-align: right; margin-top: -5px; margin-bottom: 10px;">
+            <a href="#" id="forgotBtn" style="font-size: 0.85rem; color: #4A7387; text-decoration: none;">Forgot password?</a>
         </div>
 
         <button type="submit">Login</button>
